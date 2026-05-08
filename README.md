@@ -62,7 +62,7 @@ uv run pytest -v
 uv run jupyter lab notebooks/
 ```
 
-El pipeline genera `resultado_prueba.csv` en la raíz (también gitignored por contener IDs de cliente) y artefactos intermedios en `data/processed/`.
+El pipeline genera `resultado_prueba.csv` en la raíz (incluido en el repo como entregable #2) y artefactos intermedios en `data/processed/` (gitignored, se regeneran).
 
 ## Los cuatro enfoques
 
@@ -113,10 +113,14 @@ apply_theme()
 
 ## Notas sobre datos
 
-Los datos del cliente **no se incluyen en el repositorio**:
-- Contienen IDs de cliente (PII bajo Ley 1266 de Habeas Data).
-- El pipeline asume que los CSVs originales se colocan localmente en `data/raw/`.
-- El archivo `resultado_prueba.csv` también está gitignored porque contiene los mismos IDs.
+Los **datos fuente del cliente** no se versionan:
+- 7 CSVs originales en `data/raw/` y diccionario en `data/external/` están gitignored.
+- El pipeline asume que se colocan localmente en `data/raw/` para reproducir.
+
+El **resultado del modelo (`resultado_prueba.csv`)** sí está incluido en el repo:
+- Es el entregable #2 explícito del PDF de la prueba.
+- 27,115 filas con la asignación cliente → ejecutivo → gerente.
+- Los IDs son tokens de 19 dígitos ya anonimizados (no documentos reales).
 
 ## Licencia
 

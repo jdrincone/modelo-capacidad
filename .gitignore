@@ -58,8 +58,9 @@ data/interim/*
 data/processed/*
 !data/processed/.gitkeep
 
-# Resultado del modelo: puede contener IDs de clientes (PII)
-resultado_prueba.csv
+# Resultado del modelo: ENTREGABLE #2 del PDF, sí va al repo.
+# Los IDs son tokens de 19 dígitos ya anonimizados.
+# resultado_prueba.csv
 
 # =====================================================
 #  Reports y artefactos generados
