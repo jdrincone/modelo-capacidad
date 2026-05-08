@@ -1,12 +1,17 @@
 [project]
 name = "modelo-capacidad"
 version = "0.1.0"
-description = "Modelo de capacidad para asignación óptima de clientes a Gerentes de Inversión - Bancolombia DICAGI"
+description = "Modelo de capacidad para asignación óptima de clientes a Gerentes de Inversión"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    { name = "DICAGI" }
+    { name = "jdrincone", email = "jdrincone@gmail.com" }
 ]
+
+[project.urls]
+Homepage = "https://modelo-capacidad.netlify.app/"
+Repository = "https://github.com/jdrincone/modelo-capacidad"
+Issues = "https://github.com/jdrincone/modelo-capacidad/issues"
 dependencies = [
     "pandas>=2.2.0",
     "numpy>=1.26.0",

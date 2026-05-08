@@ -1,8 +1,17 @@
 # Modelo de Capacidad · Asignación cliente–gerente
 
+**🌐 Informe interactivo en vivo: https://modelo-capacidad.netlify.app/**
+
 Solución analítica al problema de asignación óptima de clientes Preferenciales a Gerentes de Inversión, con cuatro enfoques (analítico, greedy, MILP exacto y simulated annealing con MCMC) que convergen al mismo óptimo.
 
 > **Resultado**: `x/y = 0.4076` (40.76%) — el techo teórico del problema dadas las restricciones e integridad de los datos.
+
+| Recurso | Enlace |
+|---|---|
+| 🌐 Informe interactivo (HTML) | https://modelo-capacidad.netlify.app/ |
+| 📦 Repositorio | https://github.com/jdrincone/modelo-capacidad |
+| 📄 Informe ejecutivo (PDF) | [`docs/informe_ejecutivo.pdf`](docs/informe_ejecutivo.pdf) |
+| 📊 Asignación final (entregable #2) | [`resultado_prueba.csv`](resultado_prueba.csv) (27.115 filas) |
 
 ## Estructura del repositorio
 
