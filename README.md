@@ -18,7 +18,7 @@ Solución analítica al problema de asignación óptima de clientes Preferencial
 │   ├── variables_adicionales.md  # Catálogo de variables propuestas
 │   ├── arquitectura.md           # Bosquejo de sistema
 │   ├── informe_ejecutivo.tex     # LaTeX del informe ejecutivo
-│   └── informe_interactivo.html  # HTML interactivo con Plotly + KaTeX
+│   └── index.html  # HTML interactivo con Plotly + KaTeX
 ├── notebooks/
 │   ├── 01_eda_clientes_y_red_comercial.ipynb
 │   ├── 02_eda_capacidad_y_tiempos.ipynb
@@ -106,7 +106,7 @@ apply_theme()
 
 | # | Entregable | Archivo |
 |---|---|---|
-| 1 | Documento explicativo | `docs/documento_final.md` + `docs/informe_interactivo.html` |
+| 1 | Documento explicativo | `docs/documento_final.md` + `docs/index.html` |
 | 2 | Asignación final | `resultado_prueba.csv` (generado por el pipeline) |
 | 3 | Código documentado | `src/modelo_capacidad/` + `tests/` |
 | 4 | Bosquejo arquitectura | `docs/arquitectura.md` + sección Arquitectura del informe |
