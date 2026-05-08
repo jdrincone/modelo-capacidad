@@ -564,6 +564,7 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
     <div class="nav-inner">
         <div class="nav-brand">Modelo de Capacidad <span>·</span> Bancolombia</div>
         <ul class="nav-links">
+            <li><a href="#glosario">Glosario</a></li>
             <li><a href="#analitico">Analítico</a></li>
             <li><a href="#greedy">Greedy</a></li>
             <li><a href="#milp">MILP</a></li>
@@ -593,6 +594,74 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
     </div>
 </section>
 
+<!-- ============== GLOSARIO ============== -->
+<section id="glosario" class="alt" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="container">
+        <span class="section-tag">▸ Antes de empezar</span>
+        <h2>Glosario rápido: qué significa cada métrica</h2>
+        <p class="section-intro">
+            Las cuatro simulaciones reportan los mismos KPIs. Si vienes directo aquí (sin haber leído el informe principal), esto es lo que significa cada uno:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 24px;">
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">V</div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Valor agregado de la solución</h4>
+                <p style="font-size: .92rem; margin-bottom: 8px;">Suma del <strong>valor</strong> $v_e$ de cada ejecutivo asignado. Es lo que el modelo busca <strong>maximizar</strong>.</p>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: .82rem; background: #FAFAFA; padding: 8px 10px; border-radius: 6px; color: var(--gris-oscuro); margin: 0;">
+                    $v_e = 1000 \cdot \#A_e + 100 \cdot \#B_e + 1 \cdot \#C_e$
+                </p>
+                <p style="font-size: .85rem; margin-top: 8px;">Pesos elegidos para que <strong>1 cliente A &gt; 9 clientes B &gt; 99 clientes C</strong>, alineado con la prioridad oficial.</p>
+            </div>
+
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">t<sub>e</sub></div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Tiempo demandado por ejecutivo</h4>
+                <p style="font-size: .92rem;">Minutos al año que el ejecutivo $e$ requiere de su gerente para atender a todos sus clientes (suma de tiempos de venta + instrumentación + post-venta de cada producto).</p>
+                <p style="font-size: .85rem; color: var(--gris-oscuro); margin: 0;">En el mini-problema: entre 60 y 160 min.</p>
+            </div>
+
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">ρ</div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Densidad valor/tiempo</h4>
+                <p style="font-size: .92rem;">$\rho_e = v_e / t_e$ — el <strong>valor por minuto</strong> que aporta el ejecutivo. La metodología Greedy ordena por esta cantidad.</p>
+                <p style="font-size: .85rem; color: var(--gris-oscuro); margin: 0;">A más densidad, más rentable es asignarlo cuando hay competencia por la capacidad.</p>
+            </div>
+
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">T<sub>g</sub></div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Capacidad anual del gerente</h4>
+                <p style="font-size: .92rem;">Minutos disponibles del gerente $g$ para atender ejecutivos durante el año. <strong>Restricción dura</strong>: la suma de $t_e$ asignada nunca puede exceder $T_g$.</p>
+                <p style="font-size: .85rem; color: var(--gris-oscuro); margin: 0;">En el mini-problema: 180–250 min por gerente.</p>
+            </div>
+
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">A · B · C</div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Categorías de cliente</h4>
+                <p style="font-size: .92rem;">Prioridad comercial. <strong>A</strong> = más rentable, <strong>C</strong> = menos. La métrica oficial $x/y$ del problema cuenta solo A+B asignados.</p>
+                <p style="font-size: .85rem; color: var(--gris-oscuro); margin: 0;">Los pills <span class="pill A">A</span><span class="pill B">B</span><span class="pill C">C</span> en los simuladores indican el mix de cada ejecutivo.</p>
+            </div>
+
+            <div style="background: var(--blanco); padding: 22px 24px; border-radius: 12px; border-left: 4px solid var(--amarillo); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; color: var(--amarillo-oscuro); margin-bottom: 6px;">H · T</div>
+                <h4 style="margin-top: 0; font-size: 1rem;">Energía y Temperatura (solo SA)</h4>
+                <p style="font-size: .92rem;">$H = -V + \lambda \cdot \text{exceso}^2$ es la energía del Hamiltoniano (negativo de V más penalización por sobrecapacidad). $T$ es la temperatura que controla la exploración.</p>
+                <p style="font-size: .85rem; color: var(--gris-oscuro); margin: 0;">Minimizar $H$ ≡ maximizar $V$ con factibilidad.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 28px; padding: 18px 24px; background: var(--blanco); border-radius: 10px; border: 1px solid var(--gris-claro);">
+            <strong style="color: var(--negro);">📐 El problema de las simulaciones</strong>
+            <p style="margin-top: 8px; font-size: .92rem; margin-bottom: 4px;">8 ejecutivos · 3 gerentes · 2 zonas · capacidades saturadas para que las diferencias entre métodos se hagan visibles.</p>
+            <ul style="margin: 8px 0 0 24px; font-size: .9rem; color: var(--gris-oscuro);">
+                <li><strong>Zona 1</strong>: 5 ejecutivos demandan 455 min · 2 gerentes ofrecen 430 min → falta capacidad de 25 min.</li>
+                <li><strong>Zona 2</strong>: 3 ejecutivos demandan 330 min · 1 gerente ofrece 220 min → falta capacidad de 110 min.</li>
+                <li><strong>Óptimo factible</strong>: $V \approx 15{.}110$ (no es alcanzable asignar todos los ejecutivos).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
 <!-- ============== ANALÍTICO ============== -->
 <section id="analitico">
     <div class="container">
@@ -606,7 +675,7 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
         </div>
 
         <p>
-            La estrategia más simple: <strong>ordena ejecutivos por prioridad de cliente (A→B→C→score)</strong> y los recorre en orden, asignando cada uno al primer gerente compatible que aún tenga capacidad libre. Es lo que un analista de negocio plantearía sin formación matemática.
+            La estrategia más simple: <strong>ordena ejecutivos por prioridad de cliente (A→B→C→score)</strong> y los recorre en orden, asignando cada uno al primer gerente compatible que aún tenga capacidad libre.
         </p>
 
         <div class="simulator">
