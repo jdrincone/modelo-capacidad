@@ -569,6 +569,7 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
             <li><a href="#milp">MILP</a></li>
             <li><a href="#sa">Simulated Annealing</a></li>
             <li><a href="#comparativa">Comparar</a></li>
+            <li><a href="#lecciones">Lecciones</a></li>
             <li><a href="index.html" class="nav-back">← Informe principal</a></li>
         </ul>
     </div>
@@ -581,8 +582,14 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
         <h1>Cómo resuelve el problema<span class="highlight">cada uno de los 4 enfoques</span></h1>
         <p class="lead">
             Simulaciones interactivas: aprieta <strong style="color:var(--amarillo)">play</strong> y observa cómo cada algoritmo construye su solución paso a paso.
-            Mismo problema (8 ejecutivos · 3 gerentes), distintas estrategias, mismo óptimo final.
+            Mismo problema (8 ejecutivos · 3 gerentes), distintas estrategias, distintos resultados según el régimen.
         </p>
+        <div style="margin-top: 32px; padding: 22px 28px; background: rgba(253,218,36,.08); border-left: 4px solid var(--amarillo); border-radius: 8px; max-width: 780px;">
+            <strong style="color: var(--amarillo); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">⚠ Nota didáctica</strong>
+            <p style="color: var(--gris-claro); margin: 8px 0 0; font-size: .95rem;">
+                Este mini-problema está <strong style="color: var(--amarillo)">deliberadamente saturado</strong> (demanda 455 min en zona 1 vs 430 disponibles · 330 min en zona 2 vs 220) para que las diferencias entre métodos se hagan visibles. En el problema real del informe (370 × 49 con sobre-oferta de capacidad) los 4 enfoques convergen al mismo óptimo. <strong style="color: var(--amarillo)">El régimen del problema (saturado vs holgado) define qué método aporta valor.</strong>
+            </p>
+        </div>
     </div>
 </section>
 
@@ -653,6 +660,16 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
                     <li>No es óptimo en problemas saturados</li>
                 </ul>
             </div>
+        </div>
+
+        <div style="margin-top: 24px; padding: 22px 28px; background: rgba(31,78,121,.05); border-left: 4px solid var(--azul); border-radius: 8px;">
+            <strong style="color: var(--azul); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">🔬 Preguntas analíticas que esta simulación responde</strong>
+            <ul style="margin: 12px 0 0 22px; color: var(--gris-oscuro); font-size: .95rem;">
+                <li><strong>¿Qué % de A logra asignar?</strong> Cuenta cuántos A entran de los 14 totales del mini-problema.</li>
+                <li><strong>¿Qué ejecutivos quedan sin gerente y por qué?</strong> Mira la zona y el tiempo demandado de los marcados en rojo.</li>
+                <li><strong>¿Cuánta capacidad queda ociosa al final?</strong> Suma de huecos en las barras de los gerentes.</li>
+                <li><strong>¿Cómo cambiaría el resultado si invierto el orden (score primero)?</strong> Test mental: ¿qué A se perderían?</li>
+            </ul>
         </div>
     </div>
 </section>
@@ -725,6 +742,16 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
                 </ul>
             </div>
         </div>
+
+        <div style="margin-top: 24px; padding: 22px 28px; background: rgba(31,78,121,.05); border-left: 4px solid var(--azul); border-radius: 8px;">
+            <strong style="color: var(--azul); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">🔬 Preguntas analíticas que esta simulación responde</strong>
+            <ul style="margin: 12px 0 0 22px; color: var(--gris-oscuro); font-size: .95rem;">
+                <li><strong>¿La densidad ρ = v/t ordena distinto que A→B→C?</strong> Compara las dos listas y nota qué ejecutivos suben/bajan.</li>
+                <li><strong>¿Best-fit deja huecos más pequeños que first-fit?</strong> El KPI de fragmentación mide los minutos residuales.</li>
+                <li><strong>¿Qué tan sensible es el resultado a los pesos $w_A, w_B, w_C$?</strong> Modificándolos cambia ρ y el orden.</li>
+                <li><strong>¿Cuál es el gap vs el óptimo del MILP?</strong> En este mini-problema los dos coinciden; en problemas más grandes el gap aparece.</li>
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -743,6 +770,11 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
         <p>
             Resuelve el problema <strong>exactamente</strong>: explora un árbol de configuraciones binarias con <em>branch & bound</em>. Cada nodo es una decisión (asignar o no un par ejecutivo–gerente). Las ramas se podan cuando su <strong>cota superior</strong> ya está por debajo de la mejor solución encontrada — eso evita explorar trillones de combinaciones.
         </p>
+
+        <div style="background: rgba(214,40,40,.05); border: 1px solid rgba(214,40,40,.3); border-radius: 8px; padding: 14px 20px; margin: 14px 0; font-size: .9rem;">
+            <strong style="color: var(--rojo);">⓵ Aviso didáctico:</strong>
+            <span style="color: var(--gris-oscuro);">Las cotas numéricas de los nodos en este árbol son <strong>ilustrativas del concepto de poda</strong>, no provienen de resolver el mini-problema con un solver real. El propósito es visualizar cómo branch & bound recorre y descarta ramas. Para el problema real, ver el código en <code>src/modelo_capacidad/models/milp.py</code>.</span>
+        </div>
 
         <div class="simulator">
             <div class="simulator-controls">
@@ -775,7 +807,7 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
                 <ul>
                     <li>Garantía formal de óptimo global (dentro del gap)</li>
                     <li>Modelado declarativo: agregar restricciones es trivial</li>
-                    <li>CBC podrido en open source — no requiere licencia</li>
+                    <li>CBC sólido en open source, no requiere licencia</li>
                     <li>Acepta warm-start del greedy para acelerar</li>
                 </ul>
             </div>
@@ -788,6 +820,16 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
                     <li>Sensible a la formulación: malos pesos → mala solución</li>
                 </ul>
             </div>
+        </div>
+
+        <div style="margin-top: 24px; padding: 22px 28px; background: rgba(31,78,121,.05); border-left: 4px solid var(--azul); border-radius: 8px;">
+            <strong style="color: var(--azul); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">🔬 Preguntas analíticas que esta simulación responde</strong>
+            <ul style="margin: 12px 0 0 22px; color: var(--gris-oscuro); font-size: .95rem;">
+                <li><strong>¿Cuántos nodos exploré vs el total posible $2^N$?</strong> En el ejemplo 4 explorados de 14 → poda del 71%.</li>
+                <li><strong>¿Qué porcentaje de poda logra el bound?</strong> Un bound apretado poda más temprano.</li>
+                <li><strong>¿Cómo escala el árbol al duplicar N?</strong> Mide crecimiento empírico vs el peor caso teórico.</li>
+                <li><strong>¿Vale la pena un warm-start con greedy?</strong> Si la solución inicial está cerca del óptimo, se podan más ramas.</li>
+            </ul>
         </div>
     </div>
 </section>
@@ -873,6 +915,17 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
                 </ul>
             </div>
         </div>
+
+        <div style="margin-top: 24px; padding: 22px 28px; background: rgba(253,218,36,.08); border-left: 4px solid var(--amarillo); border-radius: 8px;">
+            <strong style="color: var(--amarillo); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">🔬 Preguntas analíticas que esta simulación responde</strong>
+            <ul style="margin: 12px 0 0 22px; color: var(--gris-claro); font-size: .95rem;">
+                <li><strong>¿La tasa de aceptación cae de ~80% a ~5%?</strong> Es la firma de un cooling correcto.</li>
+                <li><strong>¿La energía $H$ se aplana al final?</strong> Plateau = convergencia; oscilación = enfriamiento insuficiente.</li>
+                <li><strong>¿Cuántas réplicas necesito para acotar la varianza?</strong> Repite con seeds distintos y mide $\sigma(V_{\text{best}})$.</li>
+                <li><strong>¿El sistema muestra transición de fase?</strong> Pico en calor específico $C(T)$ marca $T_c$; aquí no aparece (problema sin frustración fuerte).</li>
+                <li><strong>¿Qué tan robusta es la solución a cambios de $w_A, w_B$?</strong> La susceptibilidad $\chi$ lo cuantifica.</li>
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -913,6 +966,70 @@ footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
             <span style="font-size: .74rem; font-weight: 700; color: var(--amarillo-oscuro); letter-spacing: .1em; text-transform: uppercase;">Insight</span>
             <p style="color: var(--negro); font-size: 1.05rem; font-weight: 500; margin-top: 8px;">
                 <strong>Para este problema, el modelo más simple basta para producción.</strong> Los enfoques sofisticados (MILP, SA) son seguros conceptuales y diagnósticos: validan que la solución simple es óptima y revelan cuándo el problema cambia de naturaleza.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============== LECCIONES ANALÍTICAS ============== -->
+<section id="lecciones">
+    <div class="container">
+        <span class="section-tag">▸ Lo que se aprende analíticamente</span>
+        <h2>Lecciones de jugar con las simulaciones</h2>
+        <p class="section-intro">
+            Más allá de los algoritmos en sí, las simulaciones permiten extraer <strong>insights estructurales sobre el problema de asignación con capacidad</strong>. Tres aprendizajes principales:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; margin-top: 24px;">
+            <div style="background: var(--blanco); padding: 28px; border-radius: 14px; box-shadow: var(--shadow-sm); border-top: 4px solid var(--amarillo);">
+                <div style="font-size: 1.6rem; margin-bottom: 12px;">①</div>
+                <h3 style="margin-top: 0;">El régimen del problema importa más que el algoritmo</h3>
+                <p style="font-size: .95rem;">
+                    En este mini-problema saturado (demanda 1.6× la oferta), los métodos divergen. En el problema real (oferta 1.4× demanda), convergen. <strong>Antes de elegir algoritmo, mide el ratio demanda/oferta.</strong>
+                </p>
+            </div>
+            <div style="background: var(--blanco); padding: 28px; border-radius: 14px; box-shadow: var(--shadow-sm); border-top: 4px solid var(--amarillo);">
+                <div style="font-size: 1.6rem; margin-bottom: 12px;">②</div>
+                <h3 style="margin-top: 0;">La heterogeneidad de ejecutivos define el aporte de Greedy</h3>
+                <p style="font-size: .95rem;">
+                    Si todos los ejecutivos tuvieran la misma densidad $v/t$, Greedy = Analítico. La <strong>varianza de $\rho_e$</strong> mide cuánto valor agrega ordenar por densidad. Un coeficiente de variación &lt; 0.1 dice "no vale la pena".
+                </p>
+            </div>
+            <div style="background: var(--blanco); padding: 28px; border-radius: 14px; box-shadow: var(--shadow-sm); border-top: 4px solid var(--amarillo);">
+                <div style="font-size: 1.6rem; margin-bottom: 12px;">③</div>
+                <h3 style="margin-top: 0;">SA aporta diagnóstico, no solo solución</h3>
+                <p style="font-size: .95rem;">
+                    La curva de enfriamiento $\langle H\rangle(T)$ y la tasa de aceptación revelan la <strong>topología del paisaje energético</strong>. Si hay plateau largo + caída brusca → transición de fase. Si la aceptación cae monótonamente → no hay frustración. Esto no lo da MILP.
+                </p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 40px;">Tabla de preguntas analíticas por nivel</h3>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--blanco); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); font-size: .9rem;">
+                <thead>
+                    <tr style="background: var(--negro); color: var(--amarillo);">
+                        <th style="padding: 12px 16px; text-align: left; font-size: .74rem; text-transform: uppercase;">Nivel de pregunta</th>
+                        <th style="padding: 12px 16px; text-align: left;">Ejemplo</th>
+                        <th style="padding: 12px 16px; text-align: center;">Mejor método</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:11px 16px; border-bottom: 1px solid var(--gris-claro);"><strong>Descriptiva</strong></td><td style="padding:11px 16px;">¿Cuántos clientes A logro asignar?</td><td style="text-align:center;">Cualquiera</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding:11px 16px;"><strong>Comparativa</strong></td><td style="padding:11px 16px;">¿Hay gap entre lo simple y lo óptimo?</td><td style="text-align:center;">Greedy + MILP</td></tr>
+                    <tr><td style="padding:11px 16px;"><strong>Sensibilidad</strong></td><td style="padding:11px 16px;">¿Qué pasa si subo $w_A$ a 1500?</td><td style="text-align:center;">SA (susceptibilidad $\chi$)</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding:11px 16px;"><strong>Robustez</strong></td><td style="padding:11px 16px;">¿La solución es estable entre runs?</td><td style="text-align:center;">SA (replicas)</td></tr>
+                    <tr><td style="padding:11px 16px;"><strong>Estructural</strong></td><td style="padding:11px 16px;">¿El problema tiene frustración intrínseca?</td><td style="text-align:center;">SA (calor específico $C$)</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding:11px 16px;"><strong>Existencial</strong></td><td style="padding:11px 16px;">¿Existe una asignación mejor?</td><td style="text-align:center; color: var(--verde); font-weight: 700;">MILP (única respuesta formal)</td></tr>
+                    <tr><td style="padding:11px 16px;"><strong>Operativa</strong></td><td style="padding:11px 16px;">¿Puedo correr esto cada día?</td><td style="text-align:center;">Greedy</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 28px; padding: 24px 28px; background: var(--negro); color: var(--gris-claro); border-radius: 12px;">
+            <strong style="color: var(--amarillo); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em;">🎯 Cierre analítico</strong>
+            <p style="margin-top: 10px; color: var(--gris-claro); font-size: 1.02rem;">
+                Las simulaciones <strong style="color: var(--amarillo)">no se eligen por su métrica final</strong>, se eligen por <strong style="color: var(--amarillo)">la pregunta que necesitas responder</strong>. En el problema real (informe principal) los 4 métodos producen el mismo $x/y = 0.4076$ — pero solo el SA te dice si esa solución es robusta a cambios de pesos, y solo el MILP te certifica que no hay otra asignación mejor.
             </p>
         </div>
     </div>
@@ -1306,7 +1423,10 @@ class SASim {
     constructor() {
         this.maxSteps = 200;
         this.Tmax = 5000; this.Tmin = 1; this.alpha = 0.99;
-        this.lambdaCap = 0.001;
+        // λ alto para que la penalización cuadrática refleje severidad real:
+        // sin esto, el SA acepta estados que violan capacidad y reporta
+        // valores ficticios (V "mejor" pero infactible).
+        this.lambdaCap = 1.0;
         this.reset();
     }
     energy(state) {
@@ -1326,8 +1446,21 @@ class SASim {
         return e + this.lambdaCap * exceso;
     }
     valueOf(state) {
-        return Object.keys(state).reduce((s, k) =>
-            s + (state[k] ? EJECUTIVOS.find(x => x.id === k).v : 0), 0);
+        // Devuelve V solo si el estado es factible (respeta capacidad).
+        // Si excede, retorna -Infinity para que no se reporte como "mejor".
+        const usedG = {};
+        let v = 0;
+        for (const k of Object.keys(state)) {
+            const gId = state[k];
+            if (gId === null) continue;
+            const ex = EJECUTIVOS.find(x => x.id === k);
+            v += ex.v;
+            usedG[gId] = (usedG[gId] || 0) + ex.t;
+        }
+        for (const g of GERENTES) {
+            if ((usedG[g.id] || 0) > g.T) return -Infinity;
+        }
+        return v;
     }
     reset() {
         this.step = 0;
@@ -1361,10 +1494,10 @@ class SASim {
         if (accept) {
             this.acceptCount++;
             const v = this.valueOf(this.state);
-            if (v > this.bestV) {
+            if (v > this.bestV && v !== -Infinity) {
                 this.bestV = v;
                 this.bestState = {...this.state};
-                this.feed.unshift({k: 'improve', t: `paso ${this.step}: <strong>${e.id}</strong> → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} <strong>★ MEJOR</strong>`});
+                this.feed.unshift({k: 'improve', t: `paso ${this.step}: <strong>${e.id}</strong> → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} <strong>★ MEJOR FACTIBLE</strong>`});
             } else {
                 this.feed.unshift({k: 'accept', t: `paso ${this.step}: ${e.id} → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} ✓`});
             }
