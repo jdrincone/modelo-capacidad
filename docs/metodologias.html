@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologías visualizadas · Modelo de Capacidad · Bancolombia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root {
+    --amarillo: #FDDA24;
+    --amarillo-claro: #FFE970;
+    --amarillo-oscuro: #E5BD00;
+    --negro: #2C2A29;
+    --gris: #ABA59D;
+    --gris-claro: #D9D5CF;
+    --gris-oscuro: #6B6863;
+    --blanco: #FFFFFF;
+    --rojo: #D62828;
+    --verde: #2D8F4E;
+    --azul: #1F4E79;
+    --shadow-sm: 0 2px 8px rgba(44,42,41,.08);
+    --shadow-md: 0 8px 24px rgba(44,42,41,.12);
+    --shadow-lg: 0 20px 50px rgba(44,42,41,.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--negro);
+    background: #FAFAFA;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+code, pre, .mono { font-family: 'JetBrains Mono', 'Consolas', monospace; }
+
+/* ===== NAV ===== */
+.nav {
+    position: sticky; top: 0;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid var(--gris-claro);
+    box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.nav-brand { font-weight: 800; color: var(--negro); }
+.nav-brand span { color: var(--amarillo-oscuro); }
+.nav-links { display: flex; gap: 22px; list-style: none; flex-wrap: wrap; }
+.nav-links a { color: var(--gris-oscuro); text-decoration: none; font-size: .88rem; font-weight: 500; }
+.nav-links a:hover { color: var(--negro); }
+.nav-back { font-size: .85rem; color: var(--gris-oscuro); text-decoration: none; }
+.nav-back:hover { color: var(--negro); }
+
+/* ===== HERO ===== */
+.hero {
+    background: linear-gradient(135deg, var(--negro), #1a1817);
+    color: var(--blanco);
+    padding: 110px 32px 90px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: ""; position: absolute;
+    top: -50%; right: -20%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(253,218,36,.18) 0%, transparent 70%);
+}
+.hero::after {
+    content: ""; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--amarillo), var(--amarillo-oscuro), var(--amarillo));
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(253,218,36,.16);
+    color: var(--amarillo);
+    border-radius: 100px;
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 24px;
+}
+.hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -.03em;
+    margin-bottom: 24px;
+}
+.hero h1 .highlight { color: var(--amarillo); display: block; }
+.hero p.lead {
+    font-size: 1.15rem;
+    color: var(--gris-claro);
+    max-width: 720px;
+    font-weight: 300;
+}
+
+/* ===== SECCIONES ===== */
+section { padding: 80px 32px; }
+.container { max-width: 1200px; margin: 0 auto; }
+section.alt { background: #FAFAFA; }
+section.dark { background: var(--negro); color: var(--blanco); }
+section.dark h2, section.dark h3 { color: var(--blanco); }
+section.dark p { color: var(--gris-claro); }
+.section-tag {
+    display: inline-block;
+    color: var(--amarillo-oscuro);
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 12px;
+}
+section.dark .section-tag { color: var(--amarillo); }
+h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    color: var(--negro);
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--negro);
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+p { color: var(--gris-oscuro); margin-bottom: 14px; max-width: 80ch; }
+strong { color: var(--negro); }
+section.dark strong { color: var(--amarillo); }
+.section-intro { font-size: 1.1rem; color: var(--gris-oscuro); max-width: 760px; margin-bottom: 32px; }
+section.dark .section-intro { color: var(--gris-claro); }
+
+/* ===== METHOD HEADER ===== */
+.method-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 28px 32px;
+    background: var(--blanco);
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    border-left: 6px solid var(--amarillo);
+}
+.method-header.lvl1 { border-left-color: var(--gris); }
+.method-header.lvl2 { border-left-color: var(--amarillo-claro); }
+.method-header.lvl3 { border-left-color: var(--amarillo); }
+.method-header.lvl4 { border-left-color: var(--negro); }
+.method-icon {
+    width: 80px; height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    background: var(--amarillo-claro);
+}
+.method-header.lvl1 .method-icon { background: var(--gris-claro); }
+.method-header.lvl4 .method-icon { background: var(--negro); }
+.method-header h2 { margin-bottom: 4px; }
+.method-header .method-sub { color: var(--gris-oscuro); font-size: .92rem; }
+
+/* ===== SIMULATOR ===== */
+.simulator {
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    margin: 22px 0;
+}
+.simulator-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: #FAFAFA;
+    border-radius: 10px;
+    border: 1px solid var(--gris-claro);
+}
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--amarillo);
+    color: var(--negro);
+    font-weight: 700;
+    font-size: .9rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn:hover { background: var(--amarillo-oscuro); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { background: var(--gris-claro); color: var(--gris-oscuro); cursor: not-allowed; }
+.btn.secondary { background: var(--gris-claro); }
+.btn.secondary:hover { background: var(--gris); color: var(--blanco); }
+.btn.dark { background: var(--negro); color: var(--amarillo); }
+.btn.dark:hover { background: #1a1817; }
+.sim-step {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem;
+    color: var(--gris-oscuro);
+}
+.sim-step strong { color: var(--negro); }
+.speed-slider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .82rem;
+    color: var(--gris-oscuro);
+}
+.speed-slider input { width: 100px; accent-color: var(--amarillo-oscuro); }
+
+/* ===== STAGE ===== */
+.stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 16px 0;
+}
+@media (max-width: 900px) { .stage { grid-template-columns: 1fr; } }
+.stage-panel {
+    border: 1px solid var(--gris-claro);
+    border-radius: 10px;
+    padding: 18px;
+    background: #FAFAFA;
+}
+.stage-panel h4 {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gris-oscuro);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+/* ===== EXEC LIST ===== */
+.exec-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--blanco);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    border: 1px solid var(--gris-claro);
+    font-size: .87rem;
+    transition: all .35s;
+}
+.exec-row.processing {
+    background: var(--amarillo-claro);
+    border-color: var(--amarillo-oscuro);
+    transform: translateX(4px);
+}
+.exec-row.assigned {
+    background: #d4edda;
+    border-color: var(--verde);
+    opacity: .7;
+}
+.exec-row.skipped {
+    background: #f8d7da;
+    border-color: var(--rojo);
+    opacity: .55;
+}
+.exec-row .ex-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--negro);
+}
+.exec-row .ex-meta {
+    font-size: .8rem;
+    color: var(--gris-oscuro);
+}
+.exec-row .pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 100px;
+    font-size: .72rem;
+    font-weight: 700;
+    margin-right: 3px;
+}
+.pill.A { background: var(--negro); color: var(--amarillo); }
+.pill.B { background: var(--amarillo); color: var(--negro); }
+.pill.C { background: var(--gris); color: var(--blanco); }
+.pill.zone { background: var(--azul); color: var(--blanco); }
+.exec-row .ex-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    color: var(--gris-oscuro);
+}
+.exec-row .ex-density {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--amarillo-oscuro);
+}
+
+/* ===== GERENTE BAR ===== */
+.gte-card {
+    background: var(--blanco);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--gris-claro);
+    transition: all .35s;
+}
+.gte-card.target {
+    border-color: var(--amarillo-oscuro);
+    box-shadow: 0 0 0 2px var(--amarillo-claro);
+}
+.gte-card.full {
+    background: rgba(214,40,40,.05);
+    border-color: var(--rojo);
+}
+.gte-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: .9rem;
+}
+.gte-id { font-weight: 700; color: var(--negro); }
+.gte-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    color: var(--gris-oscuro);
+}
+.cap-bar {
+    height: 14px;
+    background: var(--gris-claro);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+}
+.cap-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amarillo), var(--amarillo-oscuro));
+    transition: width .5s;
+    border-radius: 100px;
+}
+.gte-card.full .cap-bar-fill { background: linear-gradient(90deg, var(--rojo), #a62020); }
+
+/* ===== METRICS ===== */
+.live-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+.metric-cell {
+    background: var(--blanco);
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--gris-claro);
+    text-align: center;
+}
+.metric-cell .num {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--negro);
+    line-height: 1;
+    font-family: 'JetBrains Mono', monospace;
+}
+.metric-cell .lbl {
+    font-size: .74rem;
+    color: var(--gris-oscuro);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-top: 6px;
+}
+.metric-cell.featured { background: var(--amarillo); }
+.metric-cell.featured .num, .metric-cell.featured .lbl { color: var(--negro); }
+
+/* ===== LOG ===== */
+.sim-log {
+    background: var(--negro);
+    color: var(--gris-claro);
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    max-height: 220px;
+    overflow-y: auto;
+    line-height: 1.5;
+    margin-top: 14px;
+}
+.sim-log .log-line { padding: 2px 0; }
+.sim-log .log-amarillo { color: var(--amarillo); }
+.sim-log .log-verde { color: #88e088; }
+.sim-log .log-rojo { color: #ff8c8c; }
+.sim-log .log-gris { color: var(--gris-oscuro); }
+
+/* ===== PROS/CONS ===== */
+.pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 24px;
+}
+@media (max-width: 700px) { .pros-cons { grid-template-columns: 1fr; } }
+.pros, .cons {
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid;
+}
+.pros { background: rgba(45,143,78,.06); border-color: var(--verde); }
+.cons { background: rgba(214,40,40,.05); border-color: var(--rojo); }
+.pros h4, .cons h4 {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+.pros h4 { color: var(--verde); }
+.cons h4 { color: var(--rojo); }
+.pros ul, .cons ul { list-style: none; }
+.pros li, .cons li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    color: var(--gris-oscuro);
+    font-size: .92rem;
+}
+.pros li::before { content: "✓"; position: absolute; left: 4px; color: var(--verde); font-weight: 800; }
+.cons li::before { content: "✗"; position: absolute; left: 4px; color: var(--rojo); font-weight: 800; }
+
+/* ===== TREE (MILP) ===== */
+.tree-stage {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    border-radius: 10px;
+    padding: 18px;
+    overflow-x: auto;
+}
+.tree-svg { width: 100%; min-width: 720px; height: auto; }
+.tree-node circle { transition: all .35s; }
+.tree-node text { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.tree-node.active circle { fill: var(--amarillo); stroke: var(--amarillo-oscuro); stroke-width: 3; }
+.tree-node.pruned circle { fill: var(--rojo); opacity: .35; }
+.tree-node.optimal circle { fill: var(--verde); stroke: #1e6537; stroke-width: 2; }
+.tree-node.visited circle { fill: var(--gris-claro); }
+
+/* ===== COOLING (SA) ===== */
+.cooling-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+@media (max-width: 900px) { .cooling-stage { grid-template-columns: 1fr; } }
+.thermo {
+    background: linear-gradient(180deg, var(--rojo) 0%, var(--amarillo) 50%, var(--azul) 100%);
+    width: 70px;
+    height: 280px;
+    border-radius: 35px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: var(--shadow-md);
+}
+.thermo-marker {
+    position: absolute;
+    left: -20px;
+    width: 110px;
+    height: 4px;
+    background: var(--negro);
+    border-radius: 2px;
+    transition: top .5s;
+}
+.thermo-marker::after {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: -6px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 8px;
+    border-color: transparent transparent transparent var(--negro);
+}
+.thermo-temp {
+    position: absolute;
+    left: 90px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--negro);
+    font-size: .9rem;
+    background: var(--blanco);
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-sm);
+    transition: top .5s;
+}
+.move-feed {
+    background: var(--negro);
+    color: var(--gris-claro);
+    padding: 14px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    max-height: 280px;
+    overflow-y: auto;
+}
+.move-feed .move {
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    line-height: 1.4;
+}
+.move.accept { background: rgba(136,224,136,.12); color: #88e088; }
+.move.reject { background: rgba(255,140,140,.10); color: #ff8c8c; }
+.move.improve { background: rgba(253,218,36,.12); color: var(--amarillo); }
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--negro);
+    color: var(--gris);
+    padding: 48px 32px 32px;
+    text-align: center;
+}
+footer .yellow-bar {
+    width: 60px; height: 4px;
+    background: var(--amarillo);
+    margin: 0 auto 20px;
+}
+footer p { color: var(--gris); margin-bottom: 10px; }
+footer a { color: var(--amarillo); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<nav class="nav">
+    <div class="nav-inner">
+        <div class="nav-brand">Modelo de Capacidad <span>·</span> Bancolombia</div>
+        <ul class="nav-links">
+            <li><a href="#analitico">Analítico</a></li>
+            <li><a href="#greedy">Greedy</a></li>
+            <li><a href="#milp">MILP</a></li>
+            <li><a href="#sa">Simulated Annealing</a></li>
+            <li><a href="#comparativa">Comparar</a></li>
+            <li><a href="index.html" class="nav-back">← Informe principal</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+    <div class="hero-inner">
+        <span class="hero-tag">Metodologías visualizadas</span>
+        <h1>Cómo resuelve el problema<span class="highlight">cada uno de los 4 enfoques</span></h1>
+        <p class="lead">
+            Simulaciones interactivas: aprieta <strong style="color:var(--amarillo)">play</strong> y observa cómo cada algoritmo construye su solución paso a paso.
+            Mismo problema (8 ejecutivos · 3 gerentes), distintas estrategias, mismo óptimo final.
+        </p>
+    </div>
+</section>
+
+<!-- ============== ANALÍTICO ============== -->
+<section id="analitico">
+    <div class="container">
+        <span class="section-tag">▸ Nivel 1 · Simple</span>
+        <div class="method-header lvl1">
+            <div class="method-icon">🟢</div>
+            <div>
+                <h2>Analítico (regla determinista)</h2>
+                <div class="method-sub">Sin búsqueda · sin retroceso · una sola pasada</div>
+            </div>
+        </div>
+
+        <p>
+            La estrategia más simple: <strong>ordena ejecutivos por prioridad de cliente (A→B→C→score)</strong> y los recorre en orden, asignando cada uno al primer gerente compatible que aún tenga capacidad libre. Es lo que un analista de negocio plantearía sin formación matemática.
+        </p>
+
+        <div class="simulator">
+            <div class="simulator-controls">
+                <button class="btn" id="ana-play">▶ Play</button>
+                <button class="btn secondary" id="ana-step">⏭ Paso</button>
+                <button class="btn secondary" id="ana-reset">⟲ Reset</button>
+                <div class="speed-slider">
+                    <span>Velocidad:</span>
+                    <input type="range" id="ana-speed" min="200" max="2000" value="800" step="100">
+                </div>
+                <div class="sim-step">Paso <strong id="ana-step-num">0</strong> / 8</div>
+            </div>
+
+            <div class="live-metrics">
+                <div class="metric-cell"><div class="num" id="ana-asigned">0</div><div class="lbl">Asignados</div></div>
+                <div class="metric-cell"><div class="num" id="ana-skipped">0</div><div class="lbl">Sin gerente</div></div>
+                <div class="metric-cell featured"><div class="num" id="ana-value">0</div><div class="lbl">Valor V</div></div>
+            </div>
+
+            <div class="stage">
+                <div class="stage-panel">
+                    <h4>Lista ordenada por #A → #B → #C → score</h4>
+                    <div id="ana-execs"></div>
+                </div>
+                <div class="stage-panel">
+                    <h4>Capacidad de los gerentes</h4>
+                    <div id="ana-gtes"></div>
+                </div>
+            </div>
+
+            <div class="sim-log" id="ana-log"></div>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>Ventajas</h4>
+                <ul>
+                    <li>Tiempo $O(n \log n)$, corre en milisegundos</li>
+                    <li>Garantiza solución factible (cumple zona y capacidad)</li>
+                    <li>Fácil de explicar a un comité no técnico</li>
+                    <li>Reproducible: misma entrada → misma salida</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>Desventajas</h4>
+                <ul>
+                    <li>No considera valor por minuto: gasta capacidad en ejecutivos costosos</li>
+                    <li>Sin backtracking: si bloquea un gerente, no puede deshacer</li>
+                    <li>Puede dejar capacidad ociosa cuando hay muchos ejecutivos pequeños</li>
+                    <li>No es óptimo en problemas saturados</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== GREEDY ============== -->
+<section id="greedy" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Nivel 2 · Heurística</span>
+        <div class="method-header lvl2">
+            <div class="method-icon">🟡</div>
+            <div>
+                <h2>Greedy densidad <span style="font-family:'JetBrains Mono'">v/t</span></h2>
+                <div class="method-sub">Prioriza ejecutivos por valor por minuto + best-fit</div>
+            </div>
+        </div>
+
+        <p>
+            En vez de ordenar por #A, calcula la <strong>densidad ρ = v_e / t_e</strong> (valor por minuto) y la usa como prioridad. Para cada ejecutivo, en lugar del primer gerente compatible, elige el de <strong>menor capacidad libre suficiente</strong> (best-fit) — esto reduce fragmentación.
+        </p>
+
+        <div class="simulator">
+            <div class="simulator-controls">
+                <button class="btn" id="grd-play">▶ Play</button>
+                <button class="btn secondary" id="grd-step">⏭ Paso</button>
+                <button class="btn secondary" id="grd-reset">⟲ Reset</button>
+                <div class="speed-slider">
+                    <span>Velocidad:</span>
+                    <input type="range" id="grd-speed" min="200" max="2000" value="800" step="100">
+                </div>
+                <div class="sim-step">Paso <strong id="grd-step-num">0</strong> / 8</div>
+            </div>
+
+            <div class="live-metrics">
+                <div class="metric-cell"><div class="num" id="grd-asigned">0</div><div class="lbl">Asignados</div></div>
+                <div class="metric-cell"><div class="num" id="grd-fragm">0</div><div class="lbl">Frag. residual</div></div>
+                <div class="metric-cell featured"><div class="num" id="grd-value">0</div><div class="lbl">Valor V</div></div>
+            </div>
+
+            <div class="stage">
+                <div class="stage-panel">
+                    <h4>Lista ordenada por <span class="mono">ρ = v/t</span> descendente</h4>
+                    <div id="grd-execs"></div>
+                </div>
+                <div class="stage-panel">
+                    <h4>Capacidad de los gerentes (best-fit)</h4>
+                    <div id="grd-gtes"></div>
+                </div>
+            </div>
+
+            <div class="sim-log" id="grd-log"></div>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>Ventajas</h4>
+                <ul>
+                    <li>Mismo tiempo $O(n \log n)$ pero mejor uso de capacidad</li>
+                    <li>Best-fit reduce fragmentación: deja huecos compactos</li>
+                    <li>Cota teórica de aproximación factor 2 al óptimo</li>
+                    <li>Excelente warm-start para el MILP</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>Desventajas</h4>
+                <ul>
+                    <li>Sigue siendo miope: no anticipa decisiones futuras</li>
+                    <li>Best-fit puede bloquear ejecutivos grandes que vienen después</li>
+                    <li>No óptimo: en problemas frustrados deja métrica sobre la mesa</li>
+                    <li>Sensible al criterio de densidad (cambiar ρ cambia el resultado)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== MILP ============== -->
+<section id="milp">
+    <div class="container">
+        <span class="section-tag">▸ Nivel 3 · Exacto</span>
+        <div class="method-header lvl3">
+            <div class="method-icon">🟠</div>
+            <div>
+                <h2>MILP exacto (PuLP + CBC)</h2>
+                <div class="method-sub">Programación entera mixta · garantía de óptimo global</div>
+            </div>
+        </div>
+
+        <p>
+            Resuelve el problema <strong>exactamente</strong>: explora un árbol de configuraciones binarias con <em>branch & bound</em>. Cada nodo es una decisión (asignar o no un par ejecutivo–gerente). Las ramas se podan cuando su <strong>cota superior</strong> ya está por debajo de la mejor solución encontrada — eso evita explorar trillones de combinaciones.
+        </p>
+
+        <div class="simulator">
+            <div class="simulator-controls">
+                <button class="btn" id="bnb-play">▶ Play</button>
+                <button class="btn secondary" id="bnb-step">⏭ Paso</button>
+                <button class="btn secondary" id="bnb-reset">⟲ Reset</button>
+                <div class="speed-slider">
+                    <span>Velocidad:</span>
+                    <input type="range" id="bnb-speed" min="300" max="2500" value="1000" step="100">
+                </div>
+                <div class="sim-step">Nodo <strong id="bnb-step-num">0</strong> / 14</div>
+            </div>
+
+            <div class="live-metrics">
+                <div class="metric-cell"><div class="num" id="bnb-explored">0</div><div class="lbl">Nodos explorados</div></div>
+                <div class="metric-cell"><div class="num" id="bnb-pruned">0</div><div class="lbl">Ramas podadas</div></div>
+                <div class="metric-cell featured"><div class="num" id="bnb-best">−</div><div class="lbl">Mejor V</div></div>
+            </div>
+
+            <div class="tree-stage">
+                <svg class="tree-svg" id="bnb-tree" viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+
+            <div class="sim-log" id="bnb-log"></div>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>Ventajas</h4>
+                <ul>
+                    <li>Garantía formal de óptimo global (dentro del gap)</li>
+                    <li>Modelado declarativo: agregar restricciones es trivial</li>
+                    <li>CBC podrido en open source — no requiere licencia</li>
+                    <li>Acepta warm-start del greedy para acelerar</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>Desventajas</h4>
+                <ul>
+                    <li>NP-hard: tiempo crece exponencialmente con el tamaño</li>
+                    <li>Difícil de explicar a no-técnicos (caja negra)</li>
+                    <li>Sin diagnóstico físico (no hay calor específico ni susceptibilidad)</li>
+                    <li>Sensible a la formulación: malos pesos → mala solución</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== SIMULATED ANNEALING ============== -->
+<section id="sa" class="dark">
+    <div class="container">
+        <span class="section-tag">▸ Nivel 4 · Físico</span>
+        <div class="method-header lvl4" style="background: rgba(253,218,36,.06); color: var(--blanco);">
+            <div class="method-icon" style="background: var(--amarillo);">🔴</div>
+            <div>
+                <h2 style="color: var(--amarillo)">Simulated Annealing (MCMC)</h2>
+                <div class="method-sub" style="color: var(--gris-claro)">Cadena de Markov · regla de Metropolis · Hamiltoniano de Ising</div>
+            </div>
+        </div>
+
+        <p>
+            Mapea el problema a un <strong>Ising spin glass con campo externo</strong> y minimiza la energía $H(\sigma)$ con una cadena MCMC. En cada paso propone un movimiento aleatorio (flip o swap), acepta con probabilidad $\min(1, e^{-\Delta H / T})$ y reduce $T$ progresivamente. Empieza caótico (acepta casi todo), termina determinista (acepta solo mejoras).
+        </p>
+
+        <div class="simulator" style="background: #1a1817;">
+            <div class="simulator-controls" style="background: rgba(0,0,0,.3); border-color: rgba(253,218,36,.2);">
+                <button class="btn dark" id="sa-play">▶ Play</button>
+                <button class="btn secondary" id="sa-step">⏭ Paso</button>
+                <button class="btn secondary" id="sa-reset">⟲ Reset</button>
+                <div class="speed-slider" style="color: var(--gris);">
+                    <span>Velocidad:</span>
+                    <input type="range" id="sa-speed" min="50" max="500" value="150" step="25">
+                </div>
+                <div class="sim-step" style="color: var(--gris)">Paso <strong id="sa-step-num" style="color: var(--amarillo)">0</strong> / 200</div>
+            </div>
+
+            <div class="live-metrics">
+                <div class="metric-cell" style="background: rgba(0,0,0,.4); color: var(--blanco); border-color: rgba(253,218,36,.2)"><div class="num" style="color: var(--blanco)" id="sa-temp">5000</div><div class="lbl" style="color: var(--gris)">Temperatura T</div></div>
+                <div class="metric-cell" style="background: rgba(0,0,0,.4); color: var(--blanco); border-color: rgba(253,218,36,.2)"><div class="num" style="color: var(--blanco)" id="sa-energy">0</div><div class="lbl" style="color: var(--gris)">Energía H</div></div>
+                <div class="metric-cell" style="background: rgba(0,0,0,.4); color: var(--blanco); border-color: rgba(253,218,36,.2)"><div class="num" style="color: var(--blanco)" id="sa-accept">0%</div><div class="lbl" style="color: var(--gris)">Tasa aceptación</div></div>
+                <div class="metric-cell" style="background: var(--amarillo)"><div class="num" id="sa-best">0</div><div class="lbl">Mejor V</div></div>
+            </div>
+
+            <div class="cooling-stage">
+                <div>
+                    <h4 style="color: var(--gris); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; font-weight: 700;">Termómetro · enfriamiento</h4>
+                    <div style="position: relative; padding-left: 60px; padding-right: 130px;">
+                        <div class="thermo">
+                            <div class="thermo-marker" id="sa-marker" style="top: 0%;"></div>
+                        </div>
+                        <div class="thermo-temp" id="sa-temp-label" style="top: 0%;">T = 5000</div>
+                    </div>
+                    <div style="margin-top: 12px; text-align: center; color: var(--gris); font-size: .82rem;">
+                        $\alpha = 0.99$ · cooling geométrico
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: var(--gris); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; font-weight: 700;">Energía vs paso (en vivo)</h4>
+                    <div id="sa-chart" style="background: rgba(0,0,0,.4); border-radius: 10px; min-height: 280px;"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 18px;">
+                <h4 style="color: var(--gris); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; font-weight: 700;">Movimientos de la cadena MCMC</h4>
+                <div class="move-feed" id="sa-feed"></div>
+            </div>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>Ventajas</h4>
+                <ul>
+                    <li>Siempre devuelve solución factible, incluso si lo cortas</li>
+                    <li>Escala lineal con tiempo asignado (no exponencial)</li>
+                    <li>Diagnósticos físicos únicos: calor específico, susceptibilidad</li>
+                    <li>Acepta restricciones blandas (penalización cuadrática)</li>
+                    <li>Mapeable a hardware quantum annealer (D-Wave)</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>Desventajas</h4>
+                <ul>
+                    <li>Estocástico: dos corridas pueden dar resultados distintos</li>
+                    <li>Sensible a parámetros: $T_{\max}$, $\alpha$, vecindario</li>
+                    <li>No hay garantía formal de óptimo (solo asintótica)</li>
+                    <li>Cooling lento puede tardar más que MILP en problemas pequeños</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== COMPARATIVA ============== -->
+<section id="comparativa" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ ¿Cuándo conviene cada uno?</span>
+        <h2>Comparativa de las 4 metodologías</h2>
+        <p class="section-intro">
+            Para nuestro problema concreto (370 ejecutivos × 49 gerentes con sobre-oferta de capacidad), los cuatro convergen al mismo óptimo $x/y = 0.4076$. La elección depende del contexto operativo, no de la métrica.
+        </p>
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--blanco); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); font-size: .92rem;">
+                <thead>
+                    <tr style="background: var(--negro); color: var(--amarillo);">
+                        <th style="padding: 14px 16px; text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em;">Aspecto</th>
+                        <th style="padding: 14px 16px; text-align: center;">🟢 Analítico</th>
+                        <th style="padding: 14px 16px; text-align: center;">🟡 Greedy</th>
+                        <th style="padding: 14px 16px; text-align: center;">🟠 MILP</th>
+                        <th style="padding: 14px 16px; text-align: center;">🔴 SA / MCMC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding: 12px 16px; border-bottom: 1px solid var(--gris-claro);"><strong>Tiempo</strong></td><td style="text-align:center; padding:12px;">0.06 s</td><td style="text-align:center;">0.06 s</td><td style="text-align:center;">0.49 s</td><td style="text-align:center;">~3 s</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding: 12px 16px;"><strong>Garantía de óptimo</strong></td><td style="text-align:center;">No</td><td style="text-align:center;">No</td><td style="text-align:center; color: var(--verde); font-weight: 700;">Sí (formal)</td><td style="text-align:center;">Asintótica</td></tr>
+                    <tr><td style="padding: 12px 16px;"><strong>Determinismo</strong></td><td style="text-align:center;">Sí</td><td style="text-align:center;">Sí</td><td style="text-align:center;">Sí</td><td style="text-align:center;">No (estocástico)</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding: 12px 16px;"><strong>Escalabilidad</strong></td><td style="text-align:center;">$O(n \log n)$</td><td style="text-align:center;">$O(n \log n)$</td><td style="text-align:center; color: var(--rojo);">Exponencial</td><td style="text-align:center; color: var(--verde); font-weight: 700;">Lineal</td></tr>
+                    <tr><td style="padding: 12px 16px;"><strong>Explicabilidad</strong></td><td style="text-align:center; color: var(--verde); font-weight: 700;">Trivial</td><td style="text-align:center;">Alta</td><td style="text-align:center;">Media</td><td style="text-align:center;">Baja</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding: 12px 16px;"><strong>Diagnósticos físicos</strong></td><td style="text-align:center;">No</td><td style="text-align:center;">No</td><td style="text-align:center;">No</td><td style="text-align:center; color: var(--verde); font-weight: 700;">$C(T)$, $\chi(T)$</td></tr>
+                    <tr><td style="padding: 12px 16px;"><strong>Restricciones blandas</strong></td><td style="text-align:center;">No</td><td style="text-align:center;">No</td><td style="text-align:center;">Difícil</td><td style="text-align:center; color: var(--verde); font-weight: 700;">Natural</td></tr>
+                    <tr style="background: rgba(253,218,36,.04);"><td style="padding: 12px 16px;"><strong>Cuándo elegirlo</strong></td><td style="padding:12px; text-align:center;">Demos a comité</td><td style="text-align:center;">Producción diaria</td><td style="text-align:center;">Cierre regulatorio</td><td style="text-align:center;">Auditoría / análisis sensibilidad</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(253,218,36,.18), rgba(253,218,36,.05)); border-left: 5px solid var(--amarillo-oscuro); padding: 22px 28px; border-radius: 8px; margin-top: 28px;">
+            <span style="font-size: .74rem; font-weight: 700; color: var(--amarillo-oscuro); letter-spacing: .1em; text-transform: uppercase;">Insight</span>
+            <p style="color: var(--negro); font-size: 1.05rem; font-weight: 500; margin-top: 8px;">
+                <strong>Para este problema, el modelo más simple basta para producción.</strong> Los enfoques sofisticados (MILP, SA) son seguros conceptuales y diagnósticos: validan que la solución simple es óptima y revelan cuándo el problema cambia de naturaleza.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+    <div class="yellow-bar"></div>
+    <p><strong style="color: var(--blanco);">Bancolombia</strong></p>
+    <p>Modelo de Capacidad · Visualización de metodologías</p>
+    <p style="margin-top: 18px;">
+        ← <a href="index.html">Volver al informe principal</a> ·
+        <a href="https://github.com/jdrincone/modelo-capacidad" target="_blank" rel="noopener">github.com/jdrincone/modelo-capacidad</a>
+    </p>
+</footer>
+
+<!-- ============== JS ============== -->
+<script>
+// ============================================================
+//  DATOS DEL PROBLEMA SIMULADO (8 ejecutivos · 3 gerentes)
+// ============================================================
+const EJECUTIVOS = [
+    {id: 'E1', a: 5, b: 2, c: 1, score: 0.45, t: 120, zona: 1},
+    {id: 'E2', a: 0, b: 4, c: 3, score: 0.20, t: 95,  zona: 1},
+    {id: 'E3', a: 3, b: 1, c: 0, score: 0.50, t: 80,  zona: 2},
+    {id: 'E4', a: 1, b: 3, c: 2, score: 0.30, t: 110, zona: 1},
+    {id: 'E5', a: 2, b: 5, c: 4, score: 0.25, t: 160, zona: 2},
+    {id: 'E6', a: 0, b: 2, c: 5, score: 0.10, t: 70,  zona: 1},
+    {id: 'E7', a: 4, b: 0, c: 1, score: 0.40, t: 90,  zona: 2},
+    {id: 'E8', a: 1, b: 1, c: 2, score: 0.18, t: 60,  zona: 1},
+];
+const GERENTES = [
+    {id: 'G1', T: 250, zona: 1},
+    {id: 'G2', T: 220, zona: 2},
+    {id: 'G3', T: 180, zona: 1},
+];
+const W = {a: 1000, b: 100, c: 1, alpha: 0.1};
+
+// Calcular valor v_e
+EJECUTIVOS.forEach(e => {
+    e.v = W.a * e.a + W.b * e.b + W.c * e.c + W.alpha * (e.a + e.b + e.c) * e.score;
+    e.density = e.v / e.t;
+});
+
+// ============================================================
+//  KaTeX
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    }
+});
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function fmt(n) { return new Intl.NumberFormat('es-CO').format(Math.round(n)); }
+
+function renderExec(e, klass = '', extra = '') {
+    return `<div class="exec-row ${klass}">
+        <span class="ex-id">${e.id}</span>
+        <div>
+            <span class="pill A">A:${e.a}</span><span class="pill B">B:${e.b}</span><span class="pill C">C:${e.c}</span>
+            <span class="pill zone">z${e.zona}</span>
+            <div class="ex-meta">score=${e.score.toFixed(2)} · t=${e.t} min · v=${fmt(e.v)}</div>
+        </div>
+        ${extra}
+    </div>`;
+}
+
+function renderGte(g, used = 0, klass = '') {
+    const pct = (used / g.T) * 100;
+    return `<div class="gte-card ${klass}">
+        <div class="gte-head">
+            <span class="gte-id">${g.id} · zona ${g.zona}</span>
+            <span class="gte-cap">${used} / ${g.T} min (${pct.toFixed(0)}%)</span>
+        </div>
+        <div class="cap-bar"><div class="cap-bar-fill" style="width: ${pct}%"></div></div>
+    </div>`;
+}
+
+// ============================================================
+//  SIMULACIÓN 1: ANALÍTICO
+// ============================================================
+class AnalyticSim {
+    constructor() {
+        this.execs = [...EJECUTIVOS].sort((a, b) =>
+            b.a - a.a || b.b - a.b || b.score - a.score
+        );
+        this.reset();
+    }
+    reset() {
+        this.step = 0;
+        this.gtes = GERENTES.map(g => ({...g, used: 0}));
+        this.assignments = {};
+        this.skipped = [];
+        this.totalValue = 0;
+        this.log = [];
+        this.playing = false;
+        this.render();
+    }
+    nextStep() {
+        if (this.step >= this.execs.length) { return false; }
+        const e = this.execs[this.step];
+        const candidates = this.gtes.filter(g =>
+            g.zona === e.zona && (g.T - g.used) >= e.t
+        );
+        if (candidates.length === 0) {
+            this.skipped.push(e.id);
+            this.log.unshift({k: 'rojo', t: `<strong>${e.id}</strong> SIN GERENTE: ningún gerente compatible con capacidad libre ≥ ${e.t}`});
+        } else {
+            const elegido = candidates[0];  // first-fit
+            elegido.used += e.t;
+            this.assignments[e.id] = elegido.id;
+            this.totalValue += e.v;
+            this.log.unshift({k: 'verde', t: `<strong>${e.id}</strong> → <strong>${elegido.id}</strong> (zona ${e.zona}, +${e.t} min, libres=${elegido.T - elegido.used})`});
+        }
+        this.step++;
+        this.render();
+        return this.step < this.execs.length;
+    }
+    render() {
+        const stepEl = document.getElementById('ana-step-num');
+        if (stepEl) stepEl.textContent = this.step;
+        document.getElementById('ana-asigned').textContent = Object.keys(this.assignments).length;
+        document.getElementById('ana-skipped').textContent = this.skipped.length;
+        document.getElementById('ana-value').textContent = fmt(this.totalValue);
+
+        document.getElementById('ana-execs').innerHTML = this.execs.map((e, i) => {
+            const k = i < this.step
+                ? (this.skipped.includes(e.id) ? 'skipped' : 'assigned')
+                : (i === this.step ? 'processing' : '');
+            return renderExec(e, k);
+        }).join('');
+
+        document.getElementById('ana-gtes').innerHTML = this.gtes.map(g => {
+            const target = this.step < this.execs.length && this.execs[this.step].zona === g.zona && !this.assignments[this.execs[this.step]?.id];
+            const klass = (g.T - g.used) < 60 ? 'full' : (target ? 'target' : '');
+            return renderGte(g, g.used, klass);
+        }).join('');
+
+        document.getElementById('ana-log').innerHTML = this.log.slice(0, 8)
+            .map(l => `<div class="log-line log-${l.k}">${l.t}</div>`).join('');
+    }
+}
+const anaSim = new AnalyticSim();
+let anaTimer = null;
+document.getElementById('ana-step').onclick = () => anaSim.nextStep();
+document.getElementById('ana-reset').onclick = () => { clearInterval(anaTimer); anaTimer = null; document.getElementById('ana-play').textContent = '▶ Play'; anaSim.reset(); };
+document.getElementById('ana-play').onclick = () => {
+    if (anaTimer) {
+        clearInterval(anaTimer); anaTimer = null;
+        document.getElementById('ana-play').textContent = '▶ Play';
+    } else {
+        const speed = +document.getElementById('ana-speed').value;
+        anaTimer = setInterval(() => {
+            if (!anaSim.nextStep()) { clearInterval(anaTimer); anaTimer = null; document.getElementById('ana-play').textContent = '▶ Play'; }
+        }, speed);
+        document.getElementById('ana-play').textContent = '⏸ Pause';
+    }
+};
+
+// ============================================================
+//  SIMULACIÓN 2: GREEDY DENSIDAD v/t (best-fit)
+// ============================================================
+class GreedySim {
+    constructor() {
+        this.execs = [...EJECUTIVOS].sort((a, b) => b.density - a.density);
+        this.reset();
+    }
+    reset() {
+        this.step = 0;
+        this.gtes = GERENTES.map(g => ({...g, used: 0}));
+        this.assignments = {};
+        this.skipped = [];
+        this.totalValue = 0;
+        this.log = [];
+        this.render();
+    }
+    nextStep() {
+        if (this.step >= this.execs.length) return false;
+        const e = this.execs[this.step];
+        const candidates = this.gtes.filter(g =>
+            g.zona === e.zona && (g.T - g.used) >= e.t
+        );
+        if (candidates.length === 0) {
+            this.skipped.push(e.id);
+            this.log.unshift({k: 'rojo', t: `<strong>${e.id}</strong> (ρ=${e.density.toFixed(0)}) SIN GERENTE`});
+        } else {
+            // best-fit: el de menor capacidad libre suficiente
+            const elegido = candidates.reduce((best, g) =>
+                (g.T - g.used) < (best.T - best.used) ? g : best
+            );
+            elegido.used += e.t;
+            this.assignments[e.id] = elegido.id;
+            this.totalValue += e.v;
+            this.log.unshift({k: 'verde', t: `<strong>${e.id}</strong> (ρ=${e.density.toFixed(0)}) → <strong>${elegido.id}</strong> [best-fit: libre antes=${elegido.T - elegido.used + e.t}, después=${elegido.T - elegido.used}]`});
+        }
+        this.step++;
+        this.render();
+        return this.step < this.execs.length;
+    }
+    render() {
+        document.getElementById('grd-step-num').textContent = this.step;
+        document.getElementById('grd-asigned').textContent = Object.keys(this.assignments).length;
+        document.getElementById('grd-fragm').textContent = this.gtes.reduce((s, g) => s + (g.T - g.used), 0);
+        document.getElementById('grd-value').textContent = fmt(this.totalValue);
+
+        document.getElementById('grd-execs').innerHTML = this.execs.map((e, i) => {
+            const k = i < this.step
+                ? (this.skipped.includes(e.id) ? 'skipped' : 'assigned')
+                : (i === this.step ? 'processing' : '');
+            const extra = `<span class="ex-density">ρ=${e.density.toFixed(0)}</span>`;
+            return renderExec(e, k, extra);
+        }).join('');
+
+        document.getElementById('grd-gtes').innerHTML = this.gtes.map(g => {
+            const ne = this.step < this.execs.length ? this.execs[this.step] : null;
+            const target = ne && ne.zona === g.zona && (g.T - g.used) >= ne.t;
+            const klass = (g.T - g.used) < 60 ? 'full' : (target ? 'target' : '');
+            return renderGte(g, g.used, klass);
+        }).join('');
+
+        document.getElementById('grd-log').innerHTML = this.log.slice(0, 8)
+            .map(l => `<div class="log-line log-${l.k}">${l.t}</div>`).join('');
+    }
+}
+const grdSim = new GreedySim();
+let grdTimer = null;
+document.getElementById('grd-step').onclick = () => grdSim.nextStep();
+document.getElementById('grd-reset').onclick = () => { clearInterval(grdTimer); grdTimer = null; document.getElementById('grd-play').textContent = '▶ Play'; grdSim.reset(); };
+document.getElementById('grd-play').onclick = () => {
+    if (grdTimer) {
+        clearInterval(grdTimer); grdTimer = null;
+        document.getElementById('grd-play').textContent = '▶ Play';
+    } else {
+        const speed = +document.getElementById('grd-speed').value;
+        grdTimer = setInterval(() => {
+            if (!grdSim.nextStep()) { clearInterval(grdTimer); grdTimer = null; document.getElementById('grd-play').textContent = '▶ Play'; }
+        }, speed);
+        document.getElementById('grd-play').textContent = '⏸ Pause';
+    }
+};
+
+// ============================================================
+//  SIMULACIÓN 3: MILP BRANCH & BOUND
+// ============================================================
+const TREE_NODES = [
+    {id: 0, x: 360, y: 30,  label: 'root', bound: 9999, depth: 0, parent: null},
+    {id: 1, x: 180, y: 110, label: 'x₁=0', bound: 5800, depth: 1, parent: 0},
+    {id: 2, x: 540, y: 110, label: 'x₁=1', bound: 8200, depth: 1, parent: 0},
+    {id: 3, x: 90,  y: 200, label: 'x₂=0', bound: 4900, depth: 2, parent: 1},
+    {id: 4, x: 270, y: 200, label: 'x₂=1', bound: 5300, depth: 2, parent: 1},
+    {id: 5, x: 450, y: 200, label: 'x₂=0', bound: 7100, depth: 2, parent: 2},
+    {id: 6, x: 630, y: 200, label: 'x₂=1', bound: 8000, depth: 2, parent: 2},
+    {id: 7, x: 45,  y: 290, label: 'leaf',  bound: 4800, depth: 3, parent: 3},
+    {id: 8, x: 135, y: 290, label: 'leaf',  bound: 4600, depth: 3, parent: 3},
+    {id: 9, x: 225, y: 290, label: 'leaf',  bound: 5200, depth: 3, parent: 4},
+    {id:10, x: 315, y: 290, label: 'leaf',  bound: 5100, depth: 3, parent: 4},
+    {id:11, x: 405, y: 290, label: 'leaf',  bound: 6900, depth: 3, parent: 5},
+    {id:12, x: 495, y: 290, label: 'leaf',  bound: 7050, depth: 3, parent: 5},
+    {id:13, x: 585, y: 290, label: 'opt',   bound: 7900, depth: 3, parent: 6, optimal: true},
+    {id:14, x: 675, y: 290, label: 'leaf',  bound: 7600, depth: 3, parent: 6},
+];
+const BNB_ORDER = [0, 2, 6, 13, 14, 5, 12, 11, 1, 4, 9, 10, 3, 7, 8];
+
+class BnBSim {
+    constructor() { this.reset(); }
+    reset() {
+        this.step = 0;
+        this.bestV = -Infinity;
+        this.explored = 0;
+        this.pruned = 0;
+        this.visited = new Set();
+        this.prunedSet = new Set();
+        this.optimalPath = new Set();
+        this.log = [];
+        this.render();
+    }
+    nextStep() {
+        if (this.step >= BNB_ORDER.length) return false;
+        const nodeId = BNB_ORDER[this.step];
+        const node = TREE_NODES[nodeId];
+        if (this.bestV !== -Infinity && node.bound < this.bestV) {
+            // poda
+            this.pruned++;
+            this.prunedSet.add(nodeId);
+            // marcar también descendientes como podados
+            this.markDescendants(nodeId);
+            this.log.unshift({k: 'rojo', t: `<strong>n${nodeId}</strong> PODADO: cota ${node.bound} &lt; mejor ${this.bestV}`});
+        } else {
+            this.explored++;
+            this.visited.add(nodeId);
+            if (node.label === 'leaf' || node.optimal) {
+                if (node.bound > this.bestV) {
+                    this.bestV = node.bound;
+                    if (node.optimal) {
+                        // marcar camino óptimo
+                        let cur = nodeId;
+                        while (cur !== null) {
+                            this.optimalPath.add(cur);
+                            cur = TREE_NODES[cur].parent;
+                        }
+                    }
+                    this.log.unshift({k: 'verde', t: `<strong>n${nodeId}</strong> hoja factible: <strong>V=${node.bound}</strong> (nuevo mejor)`});
+                } else {
+                    this.log.unshift({k: 'amarillo', t: `<strong>n${nodeId}</strong> hoja factible V=${node.bound} (no mejora)`});
+                }
+            } else {
+                this.log.unshift({k: 'amarillo', t: `<strong>n${nodeId}</strong> expandido, cota=${node.bound}`});
+            }
+        }
+        this.step++;
+        this.render();
+        return this.step < BNB_ORDER.length;
+    }
+    markDescendants(rootId) {
+        TREE_NODES.forEach(n => {
+            let cur = n.id, anc = [];
+            while (cur !== null) { anc.push(cur); cur = TREE_NODES[cur].parent; }
+            if (anc.includes(rootId) && n.id !== rootId) this.prunedSet.add(n.id);
+        });
+    }
+    render() {
+        document.getElementById('bnb-step-num').textContent = this.step;
+        document.getElementById('bnb-explored').textContent = this.explored;
+        document.getElementById('bnb-pruned').textContent = this.pruned;
+        document.getElementById('bnb-best').textContent = this.bestV === -Infinity ? '−' : fmt(this.bestV);
+
+        const svg = document.getElementById('bnb-tree');
+        let h = '';
+        // edges
+        TREE_NODES.forEach(n => {
+            if (n.parent !== null) {
+                const p = TREE_NODES[n.parent];
+                h += `<line x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" stroke="${this.prunedSet.has(n.id) ? '#D62828' : '#ABA59D'}" stroke-width="${this.optimalPath.has(n.id) ? 3 : 1.5}" opacity="${this.prunedSet.has(n.id) ? .35 : 1}"/>`;
+            }
+        });
+        // nodes
+        TREE_NODES.forEach(n => {
+            let klass = '';
+            if (this.optimalPath.has(n.id)) klass = 'optimal';
+            else if (this.prunedSet.has(n.id)) klass = 'pruned';
+            else if (this.visited.has(n.id)) klass = 'visited';
+            const isCurrent = this.step > 0 && BNB_ORDER[this.step - 1] === n.id;
+            if (isCurrent && klass !== 'optimal') klass = 'active';
+            const fill = klass === 'optimal' ? '#2D8F4E' :
+                         klass === 'pruned' ? '#D62828' :
+                         klass === 'active' ? '#FDDA24' :
+                         klass === 'visited' ? '#D9D5CF' : '#FFFFFF';
+            const stroke = klass === 'active' ? '#E5BD00' : '#2C2A29';
+            const op = klass === 'pruned' ? .35 : 1;
+            h += `<g class="tree-node ${klass}" opacity="${op}">
+                <circle cx="${n.x}" cy="${n.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="${klass === 'active' || klass === 'optimal' ? 3 : 1.5}"/>
+                <text x="${n.x}" y="${n.y - 2}" text-anchor="middle" font-weight="700" fill="${klass === 'optimal' || klass === 'pruned' ? '#FFF' : '#2C2A29'}">${n.id}</text>
+                <text x="${n.x}" y="${n.y + 10}" text-anchor="middle" font-size="9" fill="${klass === 'optimal' || klass === 'pruned' ? '#FFE970' : '#6B6863'}">${n.bound}</text>
+            </g>`;
+        });
+        svg.innerHTML = h;
+
+        document.getElementById('bnb-log').innerHTML = this.log.slice(0, 8)
+            .map(l => `<div class="log-line log-${l.k}">${l.t}</div>`).join('');
+    }
+}
+const bnbSim = new BnBSim();
+let bnbTimer = null;
+document.getElementById('bnb-step').onclick = () => bnbSim.nextStep();
+document.getElementById('bnb-reset').onclick = () => { clearInterval(bnbTimer); bnbTimer = null; document.getElementById('bnb-play').textContent = '▶ Play'; bnbSim.reset(); };
+document.getElementById('bnb-play').onclick = () => {
+    if (bnbTimer) {
+        clearInterval(bnbTimer); bnbTimer = null;
+        document.getElementById('bnb-play').textContent = '▶ Play';
+    } else {
+        const speed = +document.getElementById('bnb-speed').value;
+        bnbTimer = setInterval(() => {
+            if (!bnbSim.nextStep()) { clearInterval(bnbTimer); bnbTimer = null; document.getElementById('bnb-play').textContent = '▶ Play'; }
+        }, speed);
+        document.getElementById('bnb-play').textContent = '⏸ Pause';
+    }
+};
+
+// ============================================================
+//  SIMULACIÓN 4: SIMULATED ANNEALING
+// ============================================================
+class SASim {
+    constructor() {
+        this.maxSteps = 200;
+        this.Tmax = 5000; this.Tmin = 1; this.alpha = 0.99;
+        this.lambdaCap = 0.001;
+        this.reset();
+    }
+    energy(state) {
+        let e = 0; let exceso = 0;
+        const usedG = {};
+        for (const k of Object.keys(state)) {
+            const eId = k; const gId = state[k];
+            if (gId === null) continue;
+            const ex = EJECUTIVOS.find(x => x.id === eId);
+            e -= ex.v;
+            usedG[gId] = (usedG[gId] || 0) + ex.t;
+        }
+        for (const g of GERENTES) {
+            const u = usedG[g.id] || 0;
+            if (u > g.T) exceso += (u - g.T) ** 2;
+        }
+        return e + this.lambdaCap * exceso;
+    }
+    valueOf(state) {
+        return Object.keys(state).reduce((s, k) =>
+            s + (state[k] ? EJECUTIVOS.find(x => x.id === k).v : 0), 0);
+    }
+    reset() {
+        this.step = 0;
+        this.T = this.Tmax;
+        this.state = {};
+        EJECUTIVOS.forEach(e => { this.state[e.id] = null; });
+        this.bestState = {...this.state};
+        this.bestV = 0;
+        this.acceptCount = 0;
+        this.history = [{step: 0, H: 0, T: this.Tmax}];
+        this.feed = [];
+        this.render();
+    }
+    propose() {
+        const e = EJECUTIVOS[Math.floor(Math.random() * EJECUTIVOS.length)];
+        const compatibles = GERENTES.filter(g => g.zona === e.zona).map(g => g.id);
+        const opciones = [...compatibles, null];
+        const nuevoG = opciones[Math.floor(Math.random() * opciones.length)];
+        return {e, nuevoG};
+    }
+    nextStep() {
+        if (this.step >= this.maxSteps) return false;
+        const {e, nuevoG} = this.propose();
+        const oldG = this.state[e.id];
+        if (oldG === nuevoG) { this.step++; this.render(); return this.step < this.maxSteps; }
+        const oldH = this.energy(this.state);
+        this.state[e.id] = nuevoG;
+        const newH = this.energy(this.state);
+        const dH = newH - oldH;
+        const accept = dH < 0 || Math.random() < Math.exp(-dH / this.T);
+        if (accept) {
+            this.acceptCount++;
+            const v = this.valueOf(this.state);
+            if (v > this.bestV) {
+                this.bestV = v;
+                this.bestState = {...this.state};
+                this.feed.unshift({k: 'improve', t: `paso ${this.step}: <strong>${e.id}</strong> → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} <strong>★ MEJOR</strong>`});
+            } else {
+                this.feed.unshift({k: 'accept', t: `paso ${this.step}: ${e.id} → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} ✓`});
+            }
+        } else {
+            this.state[e.id] = oldG;  // revertir
+            this.feed.unshift({k: 'reject', t: `paso ${this.step}: ${e.id} → ${nuevoG || 'NULL'} ΔH=${dH.toFixed(0)} ✗ rechazado`});
+        }
+        this.history.push({step: this.step, H: this.energy(this.state), T: this.T});
+        this.T = Math.max(this.Tmin, this.T * this.alpha);
+        this.step++;
+        if (this.step % 5 === 0) this.render();
+        return this.step < this.maxSteps;
+    }
+    render() {
+        document.getElementById('sa-step-num').textContent = this.step;
+        document.getElementById('sa-temp').textContent = fmt(this.T);
+        document.getElementById('sa-energy').textContent = fmt(this.energy(this.state));
+        const acceptRate = this.step > 0 ? Math.round((this.acceptCount / this.step) * 100) : 0;
+        document.getElementById('sa-accept').textContent = acceptRate + '%';
+        document.getElementById('sa-best').textContent = fmt(this.bestV);
+
+        // termómetro
+        const pct = Math.max(0, Math.min(100, 100 * (1 - Math.log(this.T) / Math.log(this.Tmax))));
+        document.getElementById('sa-marker').style.top = pct + '%';
+        const tempLabel = document.getElementById('sa-temp-label');
+        tempLabel.style.top = pct + '%';
+        tempLabel.textContent = `T = ${fmt(this.T)}`;
+
+        // chart
+        if (this.history.length > 1) {
+            Plotly.react('sa-chart', [{
+                x: this.history.map(h => h.step),
+                y: this.history.map(h => h.H),
+                type: 'scatter', mode: 'lines',
+                line: { color: '#FDDA24', width: 2 }
+            }], {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                margin: { l: 50, r: 20, t: 10, b: 35 },
+                font: { family: 'Inter', color: '#ABA59D', size: 11 },
+                xaxis: { gridcolor: '#3a3837', title: { text: 'paso' } },
+                yaxis: { gridcolor: '#3a3837', title: { text: 'H (energía)' } }
+            }, { displayModeBar: false, responsive: true });
+        }
+
+        // feed
+        document.getElementById('sa-feed').innerHTML = this.feed.slice(0, 15)
+            .map(m => `<div class="move ${m.k}">${m.t}</div>`).join('');
+    }
+}
+const saSim = new SASim();
+let saTimer = null;
+document.getElementById('sa-step').onclick = () => saSim.nextStep();
+document.getElementById('sa-reset').onclick = () => { clearInterval(saTimer); saTimer = null; document.getElementById('sa-play').textContent = '▶ Play'; saSim.reset(); };
+document.getElementById('sa-play').onclick = () => {
+    if (saTimer) {
+        clearInterval(saTimer); saTimer = null;
+        document.getElementById('sa-play').textContent = '▶ Play';
+    } else {
+        const speed = +document.getElementById('sa-speed').value;
+        saTimer = setInterval(() => {
+            if (!saSim.nextStep()) { clearInterval(saTimer); saTimer = null; document.getElementById('sa-play').textContent = '▶ Play'; }
+        }, speed);
+        document.getElementById('sa-play').textContent = '⏸ Pause';
+    }
+};
+</script>
+
+</body>
+</html>

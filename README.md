@@ -9,6 +9,7 @@ Solución analítica al problema de asignación óptima de clientes Preferencial
 | Recurso | Enlace |
 |---|---|
 | 🌐 Informe interactivo (HTML) | https://modelo-capacidad.netlify.app/ |
+| 🎬 Metodologías visualizadas (interactivo) | https://modelo-capacidad.netlify.app/metodologias.html |
 | 📦 Repositorio | https://github.com/jdrincone/modelo-capacidad |
 | 📄 Informe ejecutivo (PDF) | [`docs/informe_ejecutivo.pdf`](docs/informe_ejecutivo.pdf) |
 | 📊 Asignación final (entregable #2) | [`resultado_prueba.csv`](resultado_prueba.csv) (27.115 filas) |
