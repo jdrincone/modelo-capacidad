@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo de Capacidad · Bancolombia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root {
+    --amarillo: #FDDA24;
+    --amarillo-claro: #FFE970;
+    --amarillo-oscuro: #E5BD00;
+    --negro: #2C2A29;
+    --gris: #ABA59D;
+    --gris-claro: #D9D5CF;
+    --gris-oscuro: #6B6863;
+    --blanco: #FFFFFF;
+    --rojo: #D62828;
+    --verde: #2D8F4E;
+    --azul: #1F4E79;
+    --shadow-sm: 0 2px 8px rgba(44, 42, 41, 0.08);
+    --shadow-md: 0 8px 24px rgba(44, 42, 41, 0.12);
+    --shadow-lg: 0 20px 50px rgba(44, 42, 41, 0.18);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--negro);
+    background: #FAFAFA;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+code, pre, .mono {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+/* ========== NAVEGACIÓN STICKY ========== */
+.nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid var(--gris-claro);
+    box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.nav-brand {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--negro);
+    letter-spacing: -0.01em;
+}
+.nav-brand span { color: var(--amarillo-oscuro); }
+.nav-links {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+    flex-wrap: wrap;
+}
+.nav-links a {
+    color: var(--gris-oscuro);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--negro); }
+
+/* ========== HERO ========== */
+.hero {
+    background: linear-gradient(135deg, var(--negro) 0%, #1a1817 100%);
+    color: var(--blanco);
+    padding: 110px 32px 90px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(253, 218, 36, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--amarillo), var(--amarillo-oscuro), var(--amarillo));
+}
+.hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+.hero-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(253, 218, 36, 0.16);
+    color: var(--amarillo);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+.hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+}
+.hero h1 .highlight {
+    color: var(--amarillo);
+    display: block;
+}
+.hero p.lead {
+    font-size: 1.15rem;
+    color: var(--gris-claro);
+    max-width: 720px;
+    margin-bottom: 56px;
+    font-weight: 300;
+}
+.hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+}
+.hero-metric {
+    border-left: 3px solid var(--amarillo);
+    padding-left: 20px;
+}
+.hero-metric .num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--amarillo);
+    letter-spacing: -0.02em;
+    display: block;
+}
+.hero-metric .lbl {
+    font-size: 0.85rem;
+    color: var(--gris-claro);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+/* ========== CONTENEDOR ========== */
+section {
+    padding: 80px 32px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.section-tag {
+    display: inline-block;
+    color: var(--amarillo-oscuro);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    color: var(--negro);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    line-height: 1.15;
+}
+h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--negro);
+    margin-top: 32px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--negro);
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+p {
+    color: var(--gris-oscuro);
+    margin-bottom: 14px;
+    max-width: 80ch;
+}
+strong { color: var(--negro); }
+.section-intro {
+    font-size: 1.12rem;
+    color: var(--gris-oscuro);
+    max-width: 760px;
+    margin-bottom: 40px;
+}
+
+/* ========== ALTERNAR FONDOS ========== */
+section.alt { background: #FAFAFA; }
+section.dark {
+    background: var(--negro);
+    color: var(--blanco);
+}
+section.dark h2 { color: var(--blanco); }
+section.dark p { color: var(--gris-claro); }
+section.dark strong { color: var(--amarillo); }
+
+/* ========== CARDS ========== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+}
+.card {
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 26px;
+    border: 1px solid var(--gris-claro);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--amarillo);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--amarillo);
+}
+.card:hover::before { transform: scaleX(1); }
+.card-icon {
+    width: 38px; height: 38px;
+    background: var(--amarillo-claro);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--negro);
+    margin-bottom: 14px;
+    font-weight: 700;
+}
+.card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--negro);
+    margin-top: 0;
+}
+.card .qty {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--amarillo-oscuro);
+    margin: 8px 0;
+}
+.card .desc {
+    font-size: 0.92rem;
+    color: var(--gris-oscuro);
+    margin: 0;
+}
+
+/* ========== TABLA ========== */
+.tabla-wrap { overflow-x: auto; margin: 30px 0; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--blanco);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    font-size: 0.92rem;
+}
+th {
+    background: var(--negro);
+    color: var(--amarillo);
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--gris-claro);
+    color: var(--gris-oscuro);
+}
+tr:nth-child(even) td {
+    background: rgba(253, 218, 36, 0.04);
+}
+tr:last-child td { border-bottom: none; }
+td.num { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--negro); }
+td .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+.pill.A { background: var(--negro); color: var(--amarillo); }
+.pill.B { background: var(--amarillo); color: var(--negro); }
+.pill.C { background: var(--gris); color: var(--blanco); }
+.pill.ok { background: #d4edda; color: var(--verde); }
+.pill.warn { background: #fff3cd; color: var(--amarillo-oscuro); }
+.pill.bad { background: #f8d7da; color: var(--rojo); }
+
+/* ========== INSIGHT BOXES ========== */
+.insight {
+    background: linear-gradient(135deg, rgba(253, 218, 36, 0.18), rgba(253, 218, 36, 0.05));
+    border-left: 5px solid var(--amarillo-oscuro);
+    padding: 22px 28px;
+    border-radius: 8px;
+    margin: 28px 0;
+}
+.insight-tag {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--amarillo-oscuro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+}
+.insight p {
+    color: var(--negro);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.honesty {
+    background: var(--negro);
+    color: var(--blanco);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+    border-left: 5px solid var(--amarillo);
+}
+.honesty .insight-tag {
+    color: var(--amarillo);
+}
+.honesty p { color: var(--gris-claro); }
+.honesty strong { color: var(--amarillo); }
+
+.decision {
+    background: rgba(217, 213, 207, 0.4);
+    border: 1px solid var(--gris);
+    border-left: 4px solid var(--negro);
+    padding: 22px 28px;
+    border-radius: 6px;
+    margin: 24px 0;
+}
+.decision .insight-tag { color: var(--negro); }
+
+/* ========== TIMELINE ========== */
+.pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 40px 0;
+    align-items: stretch;
+}
+.pipeline-step {
+    background: var(--blanco);
+    border: 2px solid var(--gris-claro);
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s;
+}
+.pipeline-step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--amarillo-oscuro);
+    font-size: 1.3rem;
+    font-weight: 800;
+    z-index: 2;
+}
+.pipeline-step:hover {
+    border-color: var(--amarillo);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+.pipeline-step .step-num {
+    width: 28px; height: 28px;
+    background: var(--amarillo);
+    color: var(--negro);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+.pipeline-step h5 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--negro);
+    margin-bottom: 4px;
+}
+.pipeline-step p {
+    font-size: 0.78rem;
+    color: var(--gris-oscuro);
+    margin: 0;
+}
+@media (max-width: 768px) {
+    .pipeline { grid-template-columns: 1fr 1fr; }
+    .pipeline-step:not(:last-child)::after { content: none; }
+}
+
+/* ========== APPROACHES GRID ========== */
+.approach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 32px;
+}
+.approach {
+    background: var(--blanco);
+    padding: 28px 26px;
+    border-radius: 14px;
+    border-top: 5px solid var(--gris);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+.approach.lvl1 { border-top-color: var(--gris); }
+.approach.lvl2 { border-top-color: var(--amarillo-claro); }
+.approach.lvl3 { border-top-color: var(--amarillo); }
+.approach.lvl4 { border-top-color: var(--negro); }
+.approach .lvl {
+    position: absolute;
+    top: 16px; right: 18px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gris);
+    letter-spacing: 0.08em;
+}
+.approach h4 {
+    font-size: 1.18rem;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    color: var(--negro);
+}
+.approach .approach-meta {
+    display: flex;
+    gap: 16px;
+    margin: 14px 0 18px;
+    padding: 12px 0;
+    border-top: 1px solid var(--gris-claro);
+    border-bottom: 1px solid var(--gris-claro);
+    font-size: 0.85rem;
+}
+.approach .approach-meta div { flex: 1; }
+.approach .approach-meta .meta-lbl {
+    color: var(--gris-oscuro);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+.approach .approach-meta .meta-val {
+    font-weight: 700;
+    color: var(--negro);
+    font-family: 'JetBrains Mono', monospace;
+}
+.approach p { font-size: 0.92rem; margin-bottom: 10px; }
+
+/* ========== KPIS ========== */
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 22px;
+    margin: 32px 0;
+}
+.kpi {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    border-radius: 14px;
+    padding: 28px 24px;
+    text-align: center;
+    transition: all 0.25s;
+}
+.kpi.featured {
+    background: linear-gradient(135deg, var(--negro), #1a1817);
+    border: none;
+    color: var(--blanco);
+}
+.kpi.featured .kpi-label { color: var(--gris-claro); }
+.kpi.featured .kpi-num { color: var(--amarillo); }
+.kpi:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.kpi-num {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--negro);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+}
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--gris-oscuro);
+    line-height: 1.4;
+}
+
+/* ========== CHART ========== */
+.chart {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    margin: 24px 0;
+    min-height: 380px;
+}
+.chart > div { min-height: 360px; }
+
+/* ========== FORMULA ========== */
+.formula {
+    background: var(--negro);
+    color: var(--amarillo);
+    padding: 24px 32px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 28px 0;
+    overflow-x: auto;
+}
+.formula .katex { color: var(--amarillo) !important; font-size: 1.2rem; }
+
+/* ========== CODE BLOCKS ========== */
+.code-block {
+    background: var(--negro);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: var(--shadow-md);
+}
+.code-block-header {
+    background: #1a1817;
+    padding: 10px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3a3837;
+}
+.code-block-title {
+    color: var(--amarillo);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+.code-block-tag {
+    color: var(--gris);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.code-block pre {
+    margin: 0;
+    padding: 18px 22px;
+    color: var(--gris-claro);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    overflow-x: auto;
+}
+.code-block .kw { color: #FDDA24; font-weight: 600; }
+.code-block .str { color: #88e088; }
+.code-block .com { color: #888; font-style: italic; }
+.code-block .fn { color: #ffe970; }
+.code-block .num-c { color: #ffaa66; }
+
+/* ========== FOOTER ========== */
+footer {
+    background: var(--negro);
+    color: var(--gris);
+    padding: 48px 32px 32px;
+    text-align: center;
+}
+footer .container { max-width: 800px; }
+footer .yellow-bar {
+    width: 60px; height: 4px;
+    background: var(--amarillo);
+    margin: 0 auto 20px;
+}
+footer p { color: var(--gris); margin-bottom: 10px; max-width: none; }
+footer p strong { color: var(--blanco); }
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+}
+.reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========== TWO-COLUMN ========== */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+@media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+}
+
+/* ========== ROADMAP ========== */
+.roadmap {
+    position: relative;
+    margin: 40px 0;
+    padding: 20px 0;
+}
+.roadmap::before {
+    content: "";
+    position: absolute;
+    left: 60px; top: 30px; bottom: 30px;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--amarillo), var(--gris-claro));
+}
+.roadmap-item {
+    position: relative;
+    padding-left: 110px;
+    margin-bottom: 28px;
+}
+.roadmap-item .marker {
+    position: absolute;
+    left: 38px;
+    top: 6px;
+    width: 50px; height: 50px;
+    background: var(--amarillo);
+    color: var(--negro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.78rem;
+    box-shadow: 0 0 0 6px rgba(253, 218, 36, 0.18);
+}
+.roadmap-item h4 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--negro);
+}
+.roadmap-item .impact {
+    color: var(--verde);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 6px;
+}
+
+/* ========== SECCIÓN HERO BAJO ========== */
+.section-hero-num {
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 900;
+    color: var(--amarillo);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 12px;
+}
+.section-hero-sub {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--negro);
+    margin-bottom: 16px;
+}
+
+/* PRINT */
+@media print {
+    .nav, .hero::before { display: none; }
+    section { page-break-inside: avoid; padding: 30px; }
+    .hero { padding: 40px; }
+    body { background: white; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAVEGACIÓN ===================== -->
+<nav class="nav">
+    <div class="nav-inner">
+        <div class="nav-brand">Modelo de Capacidad <span>·</span> Bancolombia</div>
+        <ul class="nav-links">
+            <li><a href="#problema">Problema</a></li>
+            <li><a href="#datos">Datos</a></li>
+            <li><a href="#hallazgo">Hallazgo</a></li>
+            <li><a href="#caminos">4 caminos</a></li>
+            <li><a href="#fisica">Física</a></li>
+            <li><a href="#resultados">Resultados</a></li>
+            <li><a href="#solucion">Solución</a></li>
+            <li><a href="#entregables">Entregables</a></li>
+            <li><a href="#variables">Variables</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#conclusiones">Conclusiones</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+    <div class="hero-inner">
+        <span class="hero-tag">Prueba analítica</span>
+        <h1>Modelo de Capacidad<span class="highlight">para la red comercial</span></h1>
+        <p class="lead">
+            Asignación óptima de 34.145 clientes Preferenciales a Gerentes de Inversión.
+            Cuatro enfoques (analítico, greedy, MILP exacto y simulated annealing con MCMC)
+            convergen al mismo óptimo. Este informe explica el problema, los datos, los caminos
+            y, sobre todo, lo que se aprende cuando los métodos sofisticados <em>no</em> mejoran
+            el resultado.
+        </p>
+        <div class="hero-metrics">
+            <div class="hero-metric">
+                <span class="num">40.76%</span>
+                <span class="lbl">Métrica oficial x/y<br><strong style="color: var(--amarillo)">= techo teórico</strong></span>
+            </div>
+            <div class="hero-metric">
+                <span class="num">40.8%</span>
+                <span class="lbl">Techo teórico<br>predicho en EDA</span>
+            </div>
+            <div class="hero-metric">
+                <span class="num">27.115</span>
+                <span class="lbl">Clientes asignados<br>de 34.145 totales</span>
+            </div>
+            <div class="hero-metric">
+                <span class="num">4 / 4</span>
+                <span class="lbl">Enfoques convergen<br>al mismo óptimo</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== PROBLEMA ===================== -->
+<section id="problema">
+    <div class="container">
+        <span class="section-tag">▸ ¿Qué pide la prueba?</span>
+        <h2>El problema en una imagen</h2>
+        <p class="section-intro">
+            Bancolombia tiene una <strong>red comercial jerárquica de tres niveles</strong>.
+            Hay que decidir cómo conectar el nivel intermedio (ejecutivos) con el nivel superior
+            (gerentes), sabiendo que <strong>los clientes están atados a su ejecutivo</strong> y
+            que cada gerente tiene un <strong>tiempo limitado al año</strong>.
+        </p>
+
+        <!-- Diagrama SVG de la jerarquía (3 capas con espaciado limpio) -->
+        <div class="chart" style="padding: 32px;">
+            <svg viewBox="0 0 820 520" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <path d="M0,0 L9,3 L0,6 z" fill="#E5BD00"/>
+                    </marker>
+                </defs>
+
+                <!-- ============== CAPA 1: CLIENTES ============== -->
+                <!-- Etiqueta de capa (header arriba, fuera del área de elementos) -->
+                <rect x="20" y="20" width="780" height="28" rx="14" fill="#FFE970" opacity="0.5"/>
+                <text x="40" y="39" font-family="Inter" font-size="12" font-weight="800" fill="#2C2A29">CAPA 1 · CLIENTES</text>
+                <text x="780" y="39" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#E5BD00">n = 34.145</text>
+
+                <!-- Círculos de clientes -->
+                <g>
+                    <circle cx="100" cy="90" r="15" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="100" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#2C2A29">B</text>
+                    <circle cx="155" cy="90" r="15" fill="#2C2A29"/>
+                    <text x="155" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FDDA24">A</text>
+                    <circle cx="210" cy="90" r="15" fill="#ABA59D"/>
+                    <text x="210" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FFF">C</text>
+
+                    <circle cx="320" cy="90" r="15" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="320" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#2C2A29">B</text>
+                    <circle cx="375" cy="90" r="15" fill="#2C2A29"/>
+                    <text x="375" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FDDA24">A</text>
+                    <circle cx="430" cy="90" r="15" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="430" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#2C2A29">B</text>
+
+                    <circle cx="540" cy="90" r="15" fill="#ABA59D"/>
+                    <text x="540" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FFF">C</text>
+                    <circle cx="595" cy="90" r="15" fill="#2C2A29"/>
+                    <text x="595" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FDDA24">A</text>
+
+                    <circle cx="700" cy="90" r="15" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="700" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#2C2A29">B</text>
+                    <circle cx="755" cy="90" r="15" fill="#ABA59D"/>
+                    <text x="755" y="95" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#FFF">C</text>
+                </g>
+
+                <!-- Líneas Cliente -> Ejecutivo -->
+                <g stroke="#ABA59D" stroke-width="1.2" fill="none" opacity="0.55">
+                    <path d="M 100 105 Q 130 140, 150 175"/>
+                    <path d="M 155 105 Q 155 140, 150 175"/>
+                    <path d="M 210 105 Q 180 140, 150 175"/>
+                    <path d="M 320 105 Q 360 140, 380 175"/>
+                    <path d="M 375 105 Q 380 140, 380 175"/>
+                    <path d="M 430 105 Q 405 140, 380 175"/>
+                    <path d="M 540 105 Q 575 140, 600 175"/>
+                    <path d="M 595 105 Q 600 140, 600 175"/>
+                    <path d="M 700 105 Q 720 140, 730 175"/>
+                    <path d="M 755 105 Q 745 140, 730 175"/>
+                </g>
+
+                <!-- ============== CAPA 2: EJECUTIVOS ============== -->
+                <rect x="20" y="200" width="780" height="28" rx="14" fill="#FFE970" opacity="0.5"/>
+                <text x="40" y="219" font-family="Inter" font-size="12" font-weight="800" fill="#2C2A29">CAPA 2 · EJECUTIVOS</text>
+                <text x="780" y="219" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#E5BD00">392 asignables · 633 huérfanos</text>
+
+                <!-- Rectángulos ejecutivos -->
+                <g>
+                    <!-- E1 asignable -->
+                    <rect x="125" y="248" width="50" height="28" rx="5" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="150" y="266" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#2C2A29">E1</text>
+
+                    <!-- E2 asignable -->
+                    <rect x="355" y="248" width="50" height="28" rx="5" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="380" y="266" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#2C2A29">E2</text>
+
+                    <!-- E3 asignable -->
+                    <rect x="575" y="248" width="50" height="28" rx="5" fill="#FDDA24" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="600" y="266" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#2C2A29">E3</text>
+
+                    <!-- E4 huérfano -->
+                    <rect x="705" y="248" width="50" height="28" rx="5" fill="none" stroke="#D62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+                    <text x="730" y="266" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#D62828">E4</text>
+                </g>
+                <!-- Anotación para huérfano (a la derecha, no encima) -->
+                <text x="730" y="294" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#D62828">huérfano (no en ecas)</text>
+
+                <!-- Líneas Ejecutivo -> Gerente -->
+                <g stroke="#E5BD00" stroke-width="2.2" fill="none" marker-end="url(#arrow)">
+                    <path d="M 150 276 Q 200 320, 240 355"/>
+                    <path d="M 380 276 Q 380 320, 380 355"/>
+                    <path d="M 600 276 Q 580 320, 540 355"/>
+                </g>
+
+                <!-- ============== CAPA 3: GERENTES DE INVERSIÓN ============== -->
+                <rect x="20" y="380" width="780" height="28" rx="14" fill="#FFE970" opacity="0.5"/>
+                <text x="40" y="399" font-family="Inter" font-size="12" font-weight="800" fill="#2C2A29">CAPA 3 · GERENTES DE INVERSIÓN</text>
+                <text x="780" y="399" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#E5BD00">49 con equipo · T_g = 75.930 min/año</text>
+
+                <!-- Rectángulos gerentes -->
+                <g>
+                    <rect x="190" y="425" width="100" height="44" rx="7" fill="#2C2A29"/>
+                    <text x="240" y="446" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#FDDA24">Gerente 1</text>
+                    <text x="240" y="461" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FFE970">cap = 75.930 min</text>
+
+                    <rect x="330" y="425" width="100" height="44" rx="7" fill="#2C2A29"/>
+                    <text x="380" y="446" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#FDDA24">Gerente 2</text>
+                    <text x="380" y="461" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FFE970">cap = 75.930 min</text>
+
+                    <rect x="490" y="425" width="100" height="44" rx="7" fill="#2C2A29"/>
+                    <text x="540" y="446" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#FDDA24">Gerente 3</text>
+                    <text x="540" y="461" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FFE970">cap = 75.930 min</text>
+                </g>
+
+                <!-- Restricciones (caja destacada en la parte inferior) -->
+                <rect x="20" y="488" width="780" height="26" rx="6" fill="#2C2A29"/>
+                <text x="40" y="506" font-family="Inter" font-size="11" font-weight="700" fill="#FDDA24">⚙ Restricciones:</text>
+                <text x="155" y="506" font-family="Inter" font-size="11" fill="#FFE970">misma zona  ·  un ejecutivo→un gerente  ·  todo o nada  ·  no exceder T_g  ·  prioridad A&gt;B&gt;C</text>
+            </svg>
+        </div>
+
+        <div class="insight">
+            <span class="insight-tag">Insight</span>
+            <p>Como <strong>todos los clientes del ejecutivo</strong> se asignan en bloque, la unidad de decisión <strong>no es el cliente, es el ejecutivo</strong>. Esto transforma el problema de 34.145 variables binarias en solo 392, lo que lo hace tratable con MILP exacto.</p>
+        </div>
+
+        <h3>La métrica oficial que tenemos que maximizar</h3>
+        <div class="formula">
+            <span class="katex-display">
+                $$ \text{score} = \frac{x}{y} = \frac{\#A_{\text{asignados}} + \#B_{\text{asignados}}}{N_{\text{clientes totales}}} $$
+            </span>
+        </div>
+        <p>El denominador es <strong>fijo</strong> (34.145 clientes). El numerador suma solo A y B asignados (<em>los C ya asignados no aportan</em>). Por eso el modelo prioriza A&gt;B&gt;C aunque la asignación es por ejecutivo.</p>
+
+        <h4 style="margin-top: 22px;">La función realmente optimizada y su variable de decisión</h4>
+        <p>
+            La métrica oficial $x/y$ <strong>no es lineal</strong> en las decisiones por ejecutivo (depende del conteo total de A y B asignados). Por eso el modelo no maximiza $x/y$ directamente, sino una <strong>función subrogada lineal</strong> diseñada para alinearse con $x/y$:
+        </p>
+        <div class="formula">
+            <span class="katex-display">
+                $$ \max_{\boldsymbol{x}} \;\; \sum_{e \in E} \sum_{g \in G_e} V_e \cdot x_{e,g} $$
+            </span>
+        </div>
+        <p>donde $x_{e,g} \in \{0,1\}$ es la <strong>variable de decisión</strong> (asignar o no al ejecutivo $e$ al gerente $g$), y $V_e$ es el valor agregado del ejecutivo:</p>
+        <div class="formula">
+            <span class="katex-display">
+                $$ V_e = w_A \cdot n^A_e + w_B \cdot n^B_e + w_C \cdot n^C_e + \alpha \cdot n_e \cdot \bar{s}_e $$
+            </span>
+        </div>
+        <p>
+            <strong>¿De dónde salen los pesos?</strong> Se eligen tales que cada cliente A pese 10× más que un B y un B pese 100× más que un C: $w_A = 1000$, $w_B = 100$, $w_C = 1$. Con esa razón, asignar un solo ejecutivo con un cliente A siempre es preferible a asignar un ejecutivo con 9 clientes B (los cuales a su vez son preferibles a 99 C). Esto reproduce la prioridad del PDF (A&gt;B&gt;C). $\alpha = 0{,}1$ es un peso pequeño para que el score promedio $\bar{s}_e$ solo desempate.
+        </p>
+        <p>
+            Esta función se obtuvo por <strong>análisis directo de la métrica</strong>: se descompuso $x/y$ en aportes por ejecutivo asumiendo que asignamos al ejecutivo completo, y se eligieron pesos que conservaran la prioridad relativa del PDF. La validación se hace observando que el MILP con esta función subrogada produce la misma solución que el SA con Hamiltoniano físico (ambos llegan a $x/y = 0{,}4076$).
+        </p>
+    </div>
+</section>
+
+<!-- ===================== DATOS ===================== -->
+<section id="datos" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Las siete tablas de origen</span>
+        <h2>Los datos disponibles</h2>
+        <p class="section-intro">
+            Recibimos <strong>7 archivos CSV</strong>. Cada uno aporta una pieza del problema. Los tamaños van desde 50 filas (gerentes) hasta 247 mil (oportunidades).
+        </p>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h4>pcac_mac_gpi_clientes</h4>
+                <div class="qty">34.145</div>
+                <p class="desc">Población de clientes Preferencial con categoría A/B/C, score, zona y asignación actual.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔗</div>
+                <h4>pcac_mac_gpi_ecas</h4>
+                <div class="qty">392</div>
+                <p class="desc">Estructura de la red: relación gerente ↔ ejecutivo. <em>Llave crítica para el modelo.</em></p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💼</div>
+                <h4>pcac_oportunidades_comer</h4>
+                <div class="qty">247.863</div>
+                <p class="desc">Oportunidades comerciales por cliente y producto. Insumo para calcular tiempo demandado.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h4>pcac_mac_gpi_tenencia_prod</h4>
+                <div class="qty">66.802</div>
+                <p class="desc">Si el cliente ya tiene/usa cada producto. Define qué oportunidades requieren venta nueva.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🏢</div>
+                <h4>pcac_planta_comercial2</h4>
+                <div class="qty">50</div>
+                <p class="desc">Catálogo de Gerentes de Inversión con ciudad, región, banca y tipo.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <h4>pcac_encuesta</h4>
+                <div class="qty">1.804</div>
+                <p class="desc">Tiempos auto-reportados por (gerente, producto, etapa). Insumo para τ_c.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h4>pcac_capacidad_gerentes</h4>
+                <div class="qty">50</div>
+                <p class="desc">Tiempo anual disponible T_g por gerente (75.930 min ≈ 1.265 horas).</p>
+            </div>
+        </div>
+
+        <h3>Distribución por categoría comercial</h3>
+        <div class="chart" id="chart-categorias"></div>
+    </div>
+</section>
+
+<!-- ===================== HALLAZGO ===================== -->
+<section id="hallazgo">
+    <div class="container">
+        <span class="section-tag">▸ El cuello de botella revelado</span>
+        <h2>El hallazgo dominante: los <span style="color: var(--amarillo-oscuro)">huérfanos</span></h2>
+        <p class="section-intro">
+            Lo que parece un problema de optimización resulta ser un problema de calidad de datos.
+            Antes de modelar, descubrimos que <strong>el techo del problema está fijo</strong>:
+            no por capacidad, sino por integridad referencial.
+        </p>
+
+        <!-- SVG: huérfanos como diagrama de Venn (con headers fuera del área de círculos) -->
+        <div class="chart" style="padding: 32px;">
+            <svg viewBox="0 0 820 460" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+
+                <!-- HEADERS DE LOS DOS CONJUNTOS (arriba, separados de los círculos) -->
+                <g>
+                    <!-- Header izquierdo -->
+                    <rect x="40" y="20" width="320" height="56" rx="8" fill="#FFE970" opacity="0.4" stroke="#E5BD00" stroke-width="1"/>
+                    <text x="60" y="42" font-family="Inter" font-size="11" font-weight="700" fill="#6B6863">EJECUTIVOS EN <tspan font-family="JetBrains Mono">clientes</tspan></text>
+                    <text x="60" y="68" font-family="Inter" font-size="22" font-weight="800" fill="#2C2A29">1.003</text>
+                    <text x="160" y="68" font-family="Inter" font-size="11" fill="#6B6863">tienen al menos un cliente Preferencial</text>
+
+                    <!-- Header derecho -->
+                    <rect x="460" y="20" width="320" height="56" rx="8" fill="#2C2A29"/>
+                    <text x="480" y="42" font-family="Inter" font-size="11" font-weight="700" fill="#FDDA24">EJECUTIVOS EN <tspan font-family="JetBrains Mono">ecas</tspan></text>
+                    <text x="480" y="68" font-family="Inter" font-size="22" font-weight="800" fill="#FDDA24">392</text>
+                    <text x="565" y="68" font-family="Inter" font-size="11" fill="#FFE970">tienen un Gerente de Inversión asignable</text>
+                </g>
+
+                <!-- DIAGRAMA DE VENN (centrado, con espacio respecto a los headers) -->
+                <g>
+                    <!-- Círculo izquierdo (clientes) -->
+                    <circle cx="320" cy="270" r="120" fill="rgba(253, 218, 36, 0.45)" stroke="#E5BD00" stroke-width="2"/>
+                    <!-- Círculo derecho (ecas) -->
+                    <circle cx="500" cy="270" r="105" fill="rgba(44, 42, 41, 0.65)" stroke="#2C2A29" stroke-width="2"/>
+                </g>
+
+                <!-- ZONA SOLO IZQUIERDA: huérfanos (633) -->
+                <g>
+                    <text x="240" y="240" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#E5BD00">HUÉRFANOS</text>
+                    <text x="240" y="258" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B6863">en clientes pero no en ecas</text>
+                    <text x="240" y="298" text-anchor="middle" font-family="Inter" font-size="36" font-weight="800" fill="#E5BD00">633</text>
+                    <text x="240" y="318" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B6863">63% del total</text>
+                </g>
+
+                <!-- INTERSECCIÓN: asignables (370) -->
+                <g>
+                    <text x="410" y="250" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#FFF">ASIGNABLES</text>
+                    <text x="410" y="268" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">intersección</text>
+                    <text x="410" y="298" text-anchor="middle" font-family="Inter" font-size="32" font-weight="800" fill="#FDDA24">370</text>
+                </g>
+
+                <!-- ZONA SOLO DERECHA: sin clientes (22) -->
+                <g>
+                    <text x="565" y="245" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#FFF">SIN CLIENTES</text>
+                    <text x="565" y="262" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">en ecas, sin cartera</text>
+                    <text x="565" y="295" text-anchor="middle" font-family="Inter" font-size="26" font-weight="800" fill="#FFF">22</text>
+                </g>
+
+                <!-- IMPACTO EN CLIENTES (caja inferior destacada) -->
+                <g>
+                    <rect x="40" y="408" width="740" height="38" rx="8" fill="#2C2A29" stroke="#D62828" stroke-width="1.5"/>
+                    <text x="410" y="425" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FDDA24">↓ Impacto cuantificado</text>
+                    <text x="410" y="439" text-anchor="middle" font-family="Inter" font-size="11" fill="#FFE970">los 633 ejecutivos huérfanos arrastran 7.030 clientes (20,6%) fuera del modelo · entre ellos 1.579 A + 2.727 B</text>
+                </g>
+
+            </svg>
+        </div>
+
+        <h3>Impacto cuantificado en clientes</h3>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th style="text-align:right">Clientes</th>
+                        <th style="text-align:right">%</th>
+                        <th style="text-align:right">A</th>
+                        <th style="text-align:right">B</th>
+                        <th style="text-align:right">C</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="pill ok">Asignables</span></td>
+                        <td class="num">27.115</td>
+                        <td class="num">79.4%</td>
+                        <td class="num">3.916</td>
+                        <td class="num">10.000</td>
+                        <td class="num">13.199</td>
+                    </tr>
+                    <tr>
+                        <td><span class="pill bad">Huérfanos</span></td>
+                        <td class="num">7.030</td>
+                        <td class="num">20.6%</td>
+                        <td class="num">1.579</td>
+                        <td class="num">2.727</td>
+                        <td class="num">2.724</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Los dos techos del problema</h3>
+        <div class="chart" id="chart-techos"></div>
+
+        <div class="honesty">
+            <span class="insight-tag">Diagnóstico</span>
+            <p>Aunque tuviéramos un modelo <strong>perfecto</strong>, la métrica jamás superará <strong>40.8%</strong>. Los 4.306 clientes A+B huérfanos son <em>estructuralmente</em> no asignables: sus ejecutivos no aparecen en la tabla <code>ecas</code> que define la jerarquía. <strong>Mejorar el modelo no resuelve esto. Mejorar los datos sí.</strong></p>
+        </div>
+
+        <!-- ===== VALIDACIÓN DE LA CONCLUSIÓN ===== -->
+        <h3>Validación de la conclusión</h3>
+        <p>
+            Una conclusión tan fuerte (&ldquo;la métrica está acotada por integridad de datos&rdquo;) merece auditoría. Verifiqué tres aspectos: <strong>tipos de dato</strong>, <strong>filtros de universo</strong> y <strong>composición por segmento</strong>. La conclusión se sostiene, con un matiz importante.
+        </p>
+
+        <div class="cards-grid" style="margin-top: 18px;">
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Llaves consistentes</h4>
+                <p class="desc">
+                    <code>cod_ejec_bco</code> es <code>string</code> en ambas tablas (<code>clientes</code> y <code>ecas</code>). Sin pérdida de precisión en enteros de 19 dígitos. Los IDs son textualmente idénticos cuando coinciden.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Universo bien definido</h4>
+                <p class="desc">
+                    Los <strong>34.145 clientes</strong> tienen <code>marca_mac_inv</code> no nula (A/B/C 100%). El <strong>99,94%</strong> tiene <code>estado_gte_inv = ACTIVO</code>. El universo está limpio.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="background: #fff3cd; color: var(--amarillo-oscuro);">!</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Matiz por segmento</h4>
+                <p class="desc">
+                    De los 7.030 huérfanos: <strong>4.446 son Preferencial/Plus</strong> (scope estricto del MAC GPI). Los <strong>2.584 restantes</strong> son PYMES, Personal, Empresarial. <em>Su ejecutivo es de otra banca</em>.
+                </p>
+            </div>
+        </div>
+
+        <h4 style="margin-top: 28px;">Composición por segmento de los 7.030 clientes huérfanos</h4>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Segmento del cliente</th>
+                        <th style="text-align:right">A</th>
+                        <th style="text-align:right">B</th>
+                        <th style="text-align:right">C</th>
+                        <th style="text-align:right">Total</th>
+                        <th>Lectura</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PREFERENCIAL</strong></td>
+                        <td class="num">433</td>
+                        <td class="num">1.181</td>
+                        <td class="num">1.610</td>
+                        <td class="num"><strong>3.224</strong></td>
+                        <td>Scope natural; ejec aún sin GPI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PLUS</strong></td>
+                        <td class="num">257</td>
+                        <td class="num">443</td>
+                        <td class="num">522</td>
+                        <td class="num"><strong>1.222</strong></td>
+                        <td>Banca premium, mismo caso</td>
+                    </tr>
+                    <tr>
+                        <td>PYMES</td>
+                        <td class="num">458</td>
+                        <td class="num">353</td>
+                        <td class="num">129</td>
+                        <td class="num">940</td>
+                        <td>Ejec. de banca PYME, no de Inversión</td>
+                    </tr>
+                    <tr>
+                        <td>PERSONAL</td>
+                        <td class="num">106</td>
+                        <td class="num">347</td>
+                        <td class="num">327</td>
+                        <td class="num">780</td>
+                        <td>Persona natural sin gerente de inversión</td>
+                    </tr>
+                    <tr>
+                        <td>NEGOCIOS &amp; INDEP.</td>
+                        <td class="num">67</td>
+                        <td class="num">121</td>
+                        <td class="num">74</td>
+                        <td class="num">262</td>
+                        <td>Ejec. de banca corporativa pequeña</td>
+                    </tr>
+                    <tr>
+                        <td>EMPRESARIAL</td>
+                        <td class="num">129</td>
+                        <td class="num">164</td>
+                        <td class="num">6</td>
+                        <td class="num">299</td>
+                        <td>Ejec. de banca empresarial</td>
+                    </tr>
+                    <tr>
+                        <td>Otros</td>
+                        <td class="num">3</td>
+                        <td class="num">10</td>
+                        <td class="num">10</td>
+                        <td class="num">23</td>
+                        <td>Corporativa, gobierno, internacional</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="insight">
+            <span class="insight-tag">Lectura</span>
+            <p>
+                El hallazgo es <strong>real</strong>: hay 633 ejecutivos cuyos clientes están marcados para el MAC de Inversión, pero ellos pertenecen a otras bancas (PYME, Personal, Empresarial) sin Gerente de Inversión asociado. <strong>No es un error de merge</strong> ni un problema de tipos: las llaves coinciden cuando deben coincidir. Es un hecho operativo: el <em>marcado del cliente</em> en <code>marca_mac_inv</code> va por delante de la <em>reasignación del ejecutivo</em> a la jerarquía de inversión, lo cual la prueba prohíbe explícitamente con la regla &ldquo;los clientes no pueden moverse ni reasignarse a otros ejecutivos&rdquo;.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CAMINOS ===================== -->
+<section id="caminos" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Los cuatro caminos para resolver</span>
+        <h2>De lo simple a lo sofisticado</h2>
+        <p class="section-intro">
+            Implementamos cuatro enfoques con complejidad creciente, no para "asegurar" el resultado, sino para
+            <strong>triangular y diagnosticar</strong>. Si los cuatro convergen → la solución es robusta. Si difieren → hay decisión real.
+        </p>
+
+        <div class="approach-grid">
+            <div class="approach lvl1">
+                <span class="lvl">Nivel 1 · Simple</span>
+                <h4>🟢 Analítico (regla)</h4>
+                <p>Ordena ejecutivos por A→B→C→score, asigna al primer gerente compatible con capacidad.</p>
+                <div class="approach-meta">
+                    <div><div class="meta-lbl">Tiempo</div><div class="meta-val">0.06s</div></div>
+                    <div><div class="meta-lbl">Resultado</div><div class="meta-val">0.4076</div></div>
+                </div>
+                <p><em>Cómo se llega: una sola pasada por la lista ordenada, primer gerente compatible que aún tenga capacidad libre se queda con el ejecutivo. Sin búsqueda, sin retroceso.</em></p>
+            </div>
+
+            <div class="approach lvl2">
+                <span class="lvl">Nivel 2 · Heurística</span>
+                <h4>🟡 Greedy densidad v/t</h4>
+                <p>Prioriza ejecutivos por <strong>valor/tiempo</strong> (ρ = v_e / t_e), best-fit por capacidad.</p>
+                <div class="approach-meta">
+                    <div><div class="meta-lbl">Tiempo</div><div class="meta-val">0.06s</div></div>
+                    <div><div class="meta-lbl">Resultado</div><div class="meta-val">0.4076</div></div>
+                </div>
+                <p><em>Cómo se llega: ordena por ρ = v_e / t_e descendente y elige el gerente compatible con la menor capacidad libre suficiente (best-fit), reduciendo fragmentación.</em></p>
+            </div>
+
+            <div class="approach lvl3">
+                <span class="lvl">Nivel 3 · Exacto</span>
+                <h4>🟠 MILP (PuLP + CBC)</h4>
+                <p>Programación entera mixta. <strong>Garantía de óptimo global</strong> por construcción.</p>
+                <div class="approach-meta">
+                    <div><div class="meta-lbl">Tiempo</div><div class="meta-val">0.49s</div></div>
+                    <div><div class="meta-lbl">Estado</div><div class="meta-val" style="color:var(--verde)">Optimal</div></div>
+                </div>
+                <p><em>Cómo se llega: el solver CBC explora un árbol de configuraciones binarias usando ramificación y poda; descarta ramas cuya cota superior ya está debajo del mejor encontrado.</em></p>
+            </div>
+
+            <div class="approach lvl4">
+                <span class="lvl">Nivel 4 · Físico</span>
+                <h4>🔴 Simulated Annealing</h4>
+                <p>Cadena MCMC sobre Hamiltoniano de Ising. Aporta <strong>diagnósticos físicos</strong>.</p>
+                <div class="approach-meta">
+                    <div><div class="meta-lbl">Pasos</div><div class="meta-val">80.000</div></div>
+                    <div><div class="meta-lbl">Resultado</div><div class="meta-val">0.4076</div></div>
+                </div>
+                <p><em>Cómo se llega: cadena de Markov con regla de Metropolis: propone movimientos aleatorios (flip o swap) y los acepta con probabilidad e^(−ΔH/T). Al enfriar T, converge al estado fundamental.</em></p>
+            </div>
+        </div>
+
+        <h3>El pipeline ejecutado</h3>
+        <div class="pipeline">
+            <div class="pipeline-step">
+                <div class="step-num">1</div>
+                <h5>Carga</h5>
+                <p>7 CSVs en data/raw/</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">2</div>
+                <h5>Feature engineering</h5>
+                <p>τ_c y t_e por ejecutivo</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">3</div>
+                <h5>4 modelos</h5>
+                <p>Analytical, greedy, MILP, SA</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">4</div>
+                <h5>Validación</h5>
+                <p>5 reglas duras del PDF</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">5</div>
+                <h5>Export</h5>
+                <p>resultado_prueba.csv</p>
+            </div>
+        </div>
+
+        <h3>Comparación visual de los 4 enfoques</h3>
+        <div class="chart" id="chart-enfoques"></div>
+
+        <div class="insight">
+            <span class="insight-tag">Lectura</span>
+            <p>Los cuatro enfoques producen <strong>exactamente la misma asignación</strong>. No es coincidencia: es evidencia empírica de que el problema <strong>no tiene mínimos locales malos</strong>. El paisaje energético es trivial → el modelo más simple basta para producción.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FÍSICA ===================== -->
+<section id="fisica" class="dark">
+    <div class="container">
+        <span class="section-tag" style="color: var(--amarillo)">▸ Mapeo a física estadística</span>
+        <h2>El problema <em style="color: var(--amarillo)">es</em> un Ising spin glass</h2>
+        <p class="section-intro" style="color: var(--gris-claro)">
+            No es analogía pedagógica. Es <strong style="color: var(--amarillo)">equivalencia matemática exacta</strong>:
+            podemos formular el problema en lenguaje del banco o en lenguaje de física, y cada formulación
+            produce los mismos resultados óptimos. Lo interesante es lo que se gana al ver el problema desde cada lado.
+        </p>
+
+        <!-- ===== VERSIÓN 1: BANCO ===== -->
+        <h3 style="color: var(--amarillo)">Versión 1: el problema en lenguaje del banco</h3>
+        <p>
+            Para cada par (ejecutivo $e$, gerente $g$), el banco decide $x_{e,g} \in \{0,1\}$:
+            asignar al ejecutivo a ese gerente (1) o no (0). Maximiza el <strong style="color: var(--amarillo)">valor comercial total</strong>:
+        </p>
+        <div class="formula">
+            <span class="katex-display">
+                $$ \max \sum_{e,g} \underbrace{V_e}_{\text{valor del ejecutivo}} \cdot \; x_{e,g} $$
+            </span>
+        </div>
+        <p>donde $V_e = 1000\cdot n^A_e + 100\cdot n^B_e + 1\cdot n^C_e + 0{,}1\cdot n_e\bar{s}_e$ pondera los clientes A/B/C que el ejecutivo trae consigo, según prioridad oficial.</p>
+        <p>Sujeto a tres restricciones de negocio:</p>
+        <ul style="margin-left: 22px; color: var(--gris-claro); margin-bottom: 18px;">
+            <li><strong style="color: var(--amarillo)">1. Único gerente:</strong> $\sum_g x_{e,g} \le 1$ para todo ejecutivo (no se puede dividir cartera).</li>
+            <li><strong style="color: var(--amarillo)">2. Capacidad anual:</strong> $\sum_e t_e \cdot x_{e,g} \le T_g$ para todo gerente (no se sobrepasa el tiempo disponible).</li>
+            <li><strong style="color: var(--amarillo)">3. Misma zona:</strong> $x_{e,g} = 0$ si $\text{zona}(e) \ne \text{zona}(g)$ (no cruzar regiones).</li>
+        </ul>
+
+        <!-- ===== VERSIÓN 2: ISING ===== -->
+        <h3 style="color: var(--amarillo)">Versión 2: el mismo problema como Ising spin glass</h3>
+        <p>
+            Cambiamos $x_{e,g}$ por un <strong style="color: var(--amarillo)">spin de Ising</strong> $\sigma_{e,g} \in \{0,1\}$, y reformulamos el negocio como minimización de la <strong style="color: var(--amarillo)">energía</strong> $H(\sigma)$:
+        </p>
+        <div class="formula">
+            <span class="katex-display">
+                $$ \min \, H(\boldsymbol{\sigma}) = \underbrace{-\sum_{e,g} v_e \, \sigma_{e,g}}_{\text{campo externo (tira a 1)}} \;+\; \underbrace{\sum_g \lambda_g \Big(\sum_e t_e \sigma_{e,g} - T_g\Big)_+^2}_{\text{muro de capacidad}} $$
+            </span>
+        </div>
+        <p>
+            <strong style="color: var(--amarillo)">Equivalencia exacta:</strong> el estado fundamental
+            $\arg\min H$ con $\lambda_g \to \infty$ es <em>idéntico</em> a la solución óptima del problema del banco.
+            Las restricciones duras (zona, único gerente) son reglas que filtran configuraciones permitidas, no van en $H$.
+        </p>
+
+        <!-- ===== EQUIVALENCIA SIDE-BY-SIDE ===== -->
+        <h3 style="color: var(--blanco)">Equivalencia: misma matemática, dos lenguajes</h3>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="background: var(--amarillo); color: var(--negro)">Concepto del banco</th>
+                        <th style="background: var(--amarillo); color: var(--negro)">Concepto físico</th>
+                        <th style="background: var(--amarillo); color: var(--negro)">Significado del mapeo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Decisión binaria $x_{e,g}$</td>
+                        <td>Spin $\sigma_{e,g} \in \{0,1\}$</td>
+                        <td>Cada par ejecutivo-gerente es una variable binaria del sistema</td>
+                    </tr>
+                    <tr>
+                        <td>Valor del ejecutivo $V_e$</td>
+                        <td>Campo externo $h_{e,g} = -v_e$</td>
+                        <td>Cuanto más valioso, más fuerte tira al spin hacia 1 (asignar)</td>
+                    </tr>
+                    <tr>
+                        <td>Tiempo demandado $t_e$</td>
+                        <td>Masa del spin (en restricción)</td>
+                        <td>Lo que el ejecutivo &ldquo;pesa&rdquo; en la capacidad del gerente</td>
+                    </tr>
+                    <tr>
+                        <td>Capacidad anual $T_g$</td>
+                        <td>Profundidad del pozo de potencial</td>
+                        <td>Hasta cuánta masa cabe antes de que el sistema rechace más</td>
+                    </tr>
+                    <tr>
+                        <td>Sobrepaso de capacidad</td>
+                        <td>Resorte unilateral cuadrático</td>
+                        <td>Penalización suave si overshoot pequeño, brutal si grande</td>
+                    </tr>
+                    <tr>
+                        <td>Restricción de zona</td>
+                        <td>Espacio de configuraciones reducido</td>
+                        <td>Vínculos prohibidos; los pares cross-zona ni siquiera existen</td>
+                    </tr>
+                    <tr>
+                        <td>Único gerente por ejecutivo</td>
+                        <td>Exclusión tipo Pauli</td>
+                        <td>El ejecutivo solo puede ocupar un &ldquo;estado de asignación&rdquo;</td>
+                    </tr>
+                    <tr>
+                        <td>Solución óptima del MILP</td>
+                        <td>Estado fundamental ($T \to 0$)</td>
+                        <td>Configuración de mínima energía es la asignación de máximo valor</td>
+                    </tr>
+                    <tr>
+                        <td>Pesos $w_A, w_B, w_C$</td>
+                        <td>Magnitud del campo externo</td>
+                        <td>Tunable: cambia la &ldquo;preferencia&rdquo; del sistema sin alterar las reglas</td>
+                    </tr>
+                    <tr>
+                        <td>Heterogeneidad de $t_e$ por ejec</td>
+                        <td>Glassiness (vidrioso, no cristalino)</td>
+                        <td>Sistema desordenado por construcción; no admite simplificación trivial</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="insight" style="background: linear-gradient(135deg, rgba(253,218,36,0.18), rgba(253,218,36,0.03)); border-color: var(--amarillo)">
+            <span class="insight-tag" style="color: var(--amarillo)">Insight</span>
+            <p style="color: var(--blanco)">
+                Cuando los dos lenguajes describen la <em>misma</em> matemática, podemos elegir el método según el objetivo.
+                Para encontrar la solución óptima exacta: MILP. Para entender cómo de robusta es esa solución
+                ante cambios o cómo escalaría con datos más grandes: la termodinámica del sistema.
+            </p>
+        </div>
+
+        <div class="two-col">
+            <div>
+                <h4 style="color: var(--amarillo)">¿Qué es un campo externo?</h4>
+                <p>En física, un campo externo (ej. magnético) actúa sobre cada spin individualmente, intentando alinearlo. Aquí, $V_e$ es el campo: <strong style="color: var(--amarillo)">cuanto más valor trae el ejecutivo, más fuerte tira hacia &ldquo;asignar&rdquo;</strong>. La capacidad es el contrapeso que impide que todos se asignen.</p>
+                <h4 style="color: var(--amarillo)">¿Por qué un resorte unilateral?</h4>
+                <p>El término $(\sum t_e \sigma_{e,g} - T_g)_+^2$ es cero si la capacidad NO se sobrepasa, y crece <strong style="color: var(--amarillo)">cuadráticamente</strong> si sí. Esto modela bien la realidad operativa: estar al 105% es aceptable; estar al 200% es desastroso.</p>
+            </div>
+            <div>
+                <!-- SVG: configuraciones de spines -->
+                <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width: 100%;">
+                    <text x="180" y="22" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FFE970">Estado de spines (configuración σ)</text>
+
+                    <!-- Grid de spines: 6x4 = 24 spines -->
+                    <g>
+                        <!-- Fila 1 -->
+                        <circle cx="60" cy="60" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="60" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="110" cy="60" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="110" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+                        <circle cx="160" cy="60" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="160" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="210" cy="60" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="210" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="260" cy="60" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="260" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+                        <circle cx="310" cy="60" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="310" y="65" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+
+                        <!-- Fila 2 -->
+                        <circle cx="60" cy="110" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="60" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="110" cy="110" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="110" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="160" cy="110" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="160" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+                        <circle cx="210" cy="110" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="210" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="260" cy="110" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="260" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="310" cy="110" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="310" y="115" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+
+                        <!-- Fila 3 -->
+                        <circle cx="60" cy="160" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="60" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+                        <circle cx="110" cy="160" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="110" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="160" cy="160" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="160" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="210" cy="160" r="18" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="210" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FDDA24">↓</text>
+                        <circle cx="260" cy="160" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="260" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+                        <circle cx="310" cy="160" r="18" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="310" y="165" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#2C2A29">↑</text>
+
+                        <!-- Leyenda -->
+                        <circle cx="80" cy="225" r="10" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                        <text x="80" y="229" text-anchor="middle" font-family="Inter" font-size="9" font-weight="700" fill="#2C2A29">↑</text>
+                        <text x="100" y="230" font-family="Inter" font-size="11" fill="#FFF">σ_eg = 1 (asignado)</text>
+                        <circle cx="220" cy="225" r="10" fill="#2C2A29" stroke="#FDDA24" stroke-width="2"/>
+                        <text x="220" y="229" text-anchor="middle" font-family="Inter" font-size="9" font-weight="700" fill="#FDDA24">↓</text>
+                        <text x="240" y="230" font-family="Inter" font-size="11" fill="#FFF">σ_eg = 0 (no asignado)</text>
+                    </g>
+
+                    <text x="180" y="270" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#ABA59D">El estado fundamental ≡ asignación óptima</text>
+                </svg>
+            </div>
+        </div>
+
+        <h3 style="color: var(--blanco)">Tres diagnósticos físicos: qué gana el banco, qué gana el físico</h3>
+        <p>
+            Los siguientes tres diagnósticos solo emergen del enfoque físico (MILP no los produce).
+            Cada uno se explica en doble lenguaje: <strong style="color: var(--amarillo)">qué le dice al físico</strong>
+            y <strong style="color: var(--amarillo)">qué le dice al banco</strong>.
+        </p>
+
+        <!-- Diagnóstico 1: Curva de enfriamiento -->
+        <div style="background: rgba(253,218,36,0.06); border-left: 4px solid var(--amarillo); padding: 22px 28px; border-radius: 6px; margin: 24px 0;">
+            <h4 style="color: var(--amarillo); margin-top: 0;">1. Curva de enfriamiento $\langle H \rangle(T)$</h4>
+            <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">Qué es:</strong> energía promedio del sistema en función de la temperatura, observada al lo largo de la simulación.</p>
+            <div class="two-col" style="gap: 28px; margin-top: 14px;">
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">📊 Para el físico:</strong> trayectoria del sistema desde alta temperatura (estado caótico, exploración) hacia $T \to 0$ (estado fundamental). Plateau final $=$ convergencia. Saltos abruptos $=$ transiciones de fase: el sistema reorganizó masivamente su estructura.</p>
+                </div>
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">🏦 Para el banco:</strong> ¿qué tan rápido y suave el modelo encuentra la asignación óptima cuando arranca desde una configuración aleatoria? Si baja monótona y se aplana, el modelo está bien afinado. Si tiene saltos, hay puntos donde &ldquo;reordenar&rdquo; ejecutivos cambia mucho el valor total: zonas de inestabilidad operativa.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnóstico 2: Calor específico -->
+        <div style="background: rgba(253,218,36,0.06); border-left: 4px solid var(--amarillo); padding: 22px 28px; border-radius: 6px; margin: 24px 0;">
+            <h4 style="color: var(--amarillo); margin-top: 0;">2. Calor específico $C(T) = \dfrac{\langle H^2 \rangle - \langle H \rangle^2}{T^2}$</h4>
+            <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">Qué es:</strong> varianza de la energía sobre $T^2$. Mide la sensibilidad del sistema a cambios de temperatura.</p>
+            <div class="two-col" style="gap: 28px; margin-top: 14px;">
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">📊 Para el físico:</strong> un <em>pico afilado</em> a $T_c$ marca una transición de fase. $C$ residual alto a $T \to 0$ indica <em>frustración</em>: el sistema no puede satisfacer todas las restricciones simultáneamente. Sin pico = sin transición, problema fácil.</p>
+                </div>
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">🏦 Para el banco:</strong> ¿hay un &ldquo;umbral&rdquo; en los pesos a partir del cual el modelo empieza a comportarse de forma diferente? Si SÍ, los parámetros del modelo son <em>frágiles</em> cerca de ese umbral; si calibras los pesos cerca, pequeños cambios producen reasignaciones masivas. Si NO, el modelo es robusto, el negocio puede confiar.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnóstico 3: Susceptibilidad -->
+        <div style="background: rgba(253,218,36,0.06); border-left: 4px solid var(--amarillo); padding: 22px 28px; border-radius: 6px; margin: 24px 0;">
+            <h4 style="color: var(--amarillo); margin-top: 0;">3. Susceptibilidad $\chi(T) = \dfrac{\langle M^2 \rangle - \langle M \rangle^2}{T}$</h4>
+            <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">Qué es:</strong> varianza del número total de ejecutivos asignados $M$ sobre $T$. Mide cómo responde la &ldquo;magnetización total&rdquo; ante el campo externo.</p>
+            <div class="two-col" style="gap: 28px; margin-top: 14px;">
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">📊 Para el físico:</strong> equivalente a la susceptibilidad magnética. Una $\chi$ alta significa que el sistema responde fuertemente al campo, una $\chi$ baja significa rigidez ante perturbaciones.</p>
+                </div>
+                <div>
+                    <p style="color: var(--gris-claro)"><strong style="color: var(--amarillo)">🏦 Para el banco:</strong> si subo $w_A$ de 1000 a 1500, ¿cuántos ejecutivos cambian de gerente? Susceptibilidad <em>baja</em> $\Rightarrow$ la asignación es estable, no hace falta calibrar finamente los pesos. Susceptibilidad <em>alta</em> $\Rightarrow$ la elección de pesos importa mucho, y ahí el negocio debe definir explícitamente sus prioridades.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="insight" style="background: linear-gradient(135deg, rgba(253,218,36,0.18), rgba(253,218,36,0.03)); border-color: var(--amarillo)">
+            <span class="insight-tag" style="color: var(--amarillo)">Lectura</span>
+            <p style="color: var(--blanco)">
+                <strong>Para nuestro problema concreto</strong>: $C$ residual bajo, $\chi$ residual baja, curva de enfriamiento sin saltos.
+                Los tres diagnósticos coinciden: <strong style="color: var(--amarillo)">el problema no tiene frustración estructural y la solución es robusta</strong>.
+                Esto es coherente con que los cuatro métodos de optimización converjan al mismo valor 0.4076.
+            </p>
+        </div>
+
+        <!-- ===== ¿Cuándo conviene cada método? ===== -->
+        <h3 style="color: var(--blanco)">¿Cuándo conviene cada método?</h3>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="background: var(--amarillo); color: var(--negro)">Método</th>
+                        <th style="background: var(--amarillo); color: var(--negro)">Lo que el banco gana</th>
+                        <th style="background: var(--amarillo); color: var(--negro)">Lo que el físico gana</th>
+                        <th style="background: var(--amarillo); color: var(--negro)">Cuándo elegirlo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Analítico (regla)</td>
+                        <td>Solución explicable a no-técnicos</td>
+                        <td>Aproximación de campo medio &ldquo;a mano&rdquo;</td>
+                        <td>Demos rápidas, baseline, comunicación a comité</td>
+                    </tr>
+                    <tr>
+                        <td>Greedy densidad</td>
+                        <td>Tiempo de cómputo &lt; 1 s, escalable</td>
+                        <td>Aproximación de Bethe / mean-field</td>
+                        <td>Producción diaria, pipelines automatizados</td>
+                    </tr>
+                    <tr>
+                        <td>MILP exacto</td>
+                        <td>Garantía formal de optimalidad</td>
+                        <td>Diagonalización exacta del Hamiltoniano</td>
+                        <td>Cierre mensual, reportes regulatorios</td>
+                    </tr>
+                    <tr>
+                        <td>Simulated Annealing</td>
+                        <td>Diagnóstico de robustez ante cambios</td>
+                        <td>Termodinámica completa: $C$, $\chi$, transiciones</td>
+                        <td>Auditoría del modelo, análisis de sensibilidad</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===================== RESULTADOS ===================== -->
+<section id="resultados">
+    <div class="container">
+        <span class="section-tag">▸ Resultados obtenidos</span>
+        <h2>Lo que el modelo entrega</h2>
+
+        <div class="kpis">
+            <div class="kpi featured">
+                <div class="kpi-num">40.76%</div>
+                <div class="kpi-label">Métrica oficial<br>x/y obtenida</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-num">27.115</div>
+                <div class="kpi-label">Clientes asignados<br>de 34.145</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-num">71.3%</div>
+                <div class="kpi-label">Clientes A asignados<br>de los asignables</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-num">78.6%</div>
+                <div class="kpi-label">Clientes B asignados<br>de los asignables</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-num">92.3%</div>
+                <div class="kpi-label">Utilización media<br>de los gerentes</div>
+            </div>
+        </div>
+
+        <h3>Estructura del archivo <code>resultado_prueba.csv</code></h3>
+        <p>Esquema y tipos consistentes con la plantilla del PDF. <strong>27.115 filas</strong>, una por cada cliente asignado. Los clientes no asignados se omiten del archivo (regla del enunciado).</p>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Columna</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>num_doc_cli</code></td><td>string (19 dígitos)</td><td>Documento del cliente asignado</td></tr>
+                    <tr><td><code>cod_tipo_doc_cli</code></td><td>integer</td><td>Tipo de documento (1, 2, ...)</td></tr>
+                    <tr><td><code>cod_ejec_bco</code></td><td>string (19 dígitos)</td><td>Ejecutivo del cliente</td></tr>
+                    <tr><td><code>num_doc_gte_inv</code></td><td>string (19 dígitos)</td><td>Documento del Gerente de Inversión asignado</td></tr>
+                    <tr><td><code>cod_gte_inv</code></td><td>string (19 dígitos)</td><td>Código del Gerente de Inversión asignado</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Validaciones que pasa el resultado</h3>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Único gerente por ejecutivo</h4>
+                <p class="desc">Cada <code>cod_ejec_bco</code> aparece con un solo <code>cod_gte_inv</code>.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Misma zona</h4>
+                <p class="desc">100% de las asignaciones cumplen <code>zona(e) = zona(g)</code>.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Capacidad respetada</h4>
+                <p class="desc">Ningún gerente excede su <code>tiempo_restante</code> anual.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="background: #d4edda; color: var(--verde);">✓</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Asignación todo-o-nada</h4>
+                <p class="desc">Todos los clientes de un ejecutivo van al mismo gerente, sin parciales.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SOLUCIÓN REAL ===================== -->
+<section id="solucion" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Cómo se genera el CSV pedido</span>
+        <h2>La solución completa, paso a paso</h2>
+        <p class="section-intro">
+            El archivo <code>resultado_prueba.csv</code> se genera de forma reproducible con un solo comando. A continuación, los cuatro módulos clave que lo producen, con el código real del repositorio.
+        </p>
+
+        <h3>Pipeline en 5 pasos</h3>
+        <div class="code-block">
+            <div class="code-block-header">
+                <span class="code-block-title">src/modelo_capacidad/run_all.py</span>
+                <span class="code-block-tag">Orquestador</span>
+            </div>
+<pre><span class="com"># 1. Carga las 7 tablas (loader con dtype=string para IDs de 19 dígitos)</span>
+clientes, ecas, capacidad, encuesta, oport, tenencia, planta = <span class="fn">load_all</span>()
+
+<span class="com"># 2. Calcula tiempo demandado por cliente (τ_c) y por ejecutivo (t_e)</span>
+tau     = <span class="fn">calcular_tau_cliente</span>(oport, tenencia, encuesta)
+df_ejec = <span class="fn">construir_df_ejecutivos</span>(clientes, tau, ecas)
+df_ger  = <span class="fn">construir_df_gerentes</span>(capacidad, ecas)
+
+<span class="com"># 3. Resuelve con MILP exacto (CBC) - garantía de óptimo global</span>
+res = <span class="fn">asignar_milp</span>(df_ejec, df_ger, time_limit=<span class="num-c">300</span>, gap_rel=<span class="num-c">0.001</span>)
+
+<span class="com"># 4. Valida las 5 reglas duras del PDF y exporta el CSV</span>
+resultado, metricas = <span class="fn">validar_y_exportar</span>(
+    res.asignaciones, df_ejec, df_ger, clientes, planta,
+    out_path=<span class="str">"resultado_prueba.csv"</span>
+)
+<span class="kw">print</span>(<span class="str">f"x/y = {metricas['metrica_x_y']:.4f}"</span>)  <span class="com"># 0.4076</span></pre>
+        </div>
+
+        <h3>Feature engineering: cálculo de τ<sub>c</sub></h3>
+        <p>El tiempo demandado por cliente sale de cruzar oportunidades, tenencia y la encuesta de tiempos. Tres casos:</p>
+        <div class="code-block">
+            <div class="code-block-header">
+                <span class="code-block-title">src/modelo_capacidad/features/tiempo_demanda.py</span>
+                <span class="code-block-tag">Feature engineering</span>
+            </div>
+<pre><span class="kw">def</span> <span class="fn">calcular_tau_cliente</span>(oportunidades, tenencia, encuesta):
+    <span class="com"># Mediana de minutos por (producto, etapa) - robusta a outliers</span>
+    tabla = <span class="fn">construir_tabla_tiempos</span>(encuesta)
+
+    df = oportunidades.<span class="fn">merge</span>(tenencia, on=[<span class="str">"num_doc_cli"</span>, <span class="str">"cod_producto"</span>])
+    df[<span class="str">"producto_norm"</span>] = df[<span class="str">"producto"</span>].<span class="fn">replace</span>(PRODUCTO_MAP)
+
+    <span class="com"># Vectorizado con np.where: 3 casos según tenencia/uso</span>
+    no_tiene     = df[<span class="str">"tenencia"</span>].fillna(<span class="num-c">0</span>) == <span class="num-c">0</span>
+    tiene_no_usa = (df[<span class="str">"tenencia"</span>] == <span class="num-c">1</span>) & (df[<span class="str">"usa_producto"</span>].fillna(<span class="num-c">0</span>) == <span class="num-c">0</span>)
+
+    minutos = np.<span class="fn">where</span>(no_tiene,     t_venta_nueva,    <span class="com"># Caso 1: venta nueva</span>
+              np.<span class="fn">where</span>(tiene_no_usa, t_postventa,      <span class="com"># Caso 2: activación</span>
+                                     <span class="num-c">0.0</span>))             <span class="com"># Caso 3: tiene y usa</span>
+    df[<span class="str">"minutos"</span>] = minutos
+    <span class="kw">return</span> df.<span class="fn">groupby</span>(<span class="str">"num_doc_cli"</span>)[<span class="str">"minutos"</span>].<span class="fn">sum</span>().<span class="fn">reset_index</span>(name=<span class="str">"tau"</span>)</pre>
+        </div>
+
+        <h3>Modelo MILP exacto</h3>
+        <p>Programación entera con PuLP/CBC. Optimal en 0.49 s para 370 ejecutivos × 49 gerentes con filtro de zona.</p>
+        <div class="code-block">
+            <div class="code-block-header">
+                <span class="code-block-title">src/modelo_capacidad/models/milp.py</span>
+                <span class="code-block-tag">Optimización exacta</span>
+            </div>
+<pre><span class="kw">def</span> <span class="fn">asignar_milp</span>(df_ejec, df_ger, time_limit=<span class="num-c">300</span>, gap_rel=<span class="num-c">0.001</span>):
+    <span class="com"># Pares válidos (ejecutivo, gerente) con misma zona</span>
+    pares = [(e, g) <span class="kw">for</span> e <span class="kw">in</span> df_ejec[<span class="str">"cod_ejec_bco"</span>]
+                    <span class="kw">for</span> g <span class="kw">in</span> df_ger[<span class="str">"cod_gte_inv"</span>]
+                    <span class="kw">if</span> zona[e] == zona[g]]
+
+    model = pl.<span class="fn">LpProblem</span>(<span class="str">"asignacion"</span>, pl.LpMaximize)
+    x = pl.LpVariable.<span class="fn">dicts</span>(<span class="str">"x"</span>, pares, cat=pl.LpBinary)
+
+    <span class="com"># Objetivo: max Σ v_e · x_eg</span>
+    model += pl.<span class="fn">lpSum</span>(valor[e] * x[(e, g)] <span class="kw">for</span> (e, g) <span class="kw">in</span> pares)
+
+    <span class="com"># R1: a lo más un gerente por ejecutivo</span>
+    <span class="kw">for</span> e <span class="kw">in</span> df_ejec[<span class="str">"cod_ejec_bco"</span>]:
+        model += pl.<span class="fn">lpSum</span>(x[p] <span class="kw">for</span> p <span class="kw">in</span> pares <span class="kw">if</span> p[<span class="num-c">0</span>] == e) &lt;= <span class="num-c">1</span>
+
+    <span class="com"># R2: capacidad anual por gerente</span>
+    <span class="kw">for</span> g <span class="kw">in</span> df_ger[<span class="str">"cod_gte_inv"</span>]:
+        model += pl.<span class="fn">lpSum</span>(tiempo[e] * x[(e, g)]
+                            <span class="kw">for</span> (e, gg) <span class="kw">in</span> pares <span class="kw">if</span> gg == g) &lt;= cap[g]
+
+    model.<span class="fn">solve</span>(pl.<span class="fn">PULP_CBC_CMD</span>(timeLimit=time_limit, gapRel=gap_rel))
+    <span class="kw">return</span> [(e, g) <span class="kw">for</span> (e, g) <span class="kw">in</span> pares <span class="kw">if</span> x[(e, g)].<span class="fn">value</span>() &gt; <span class="num-c">0.5</span>]</pre>
+        </div>
+
+        <h3>Validación y exportación del CSV</h3>
+        <p>Antes de escribir el archivo se verifican las 5 reglas duras del PDF. Si alguna falla, el pipeline detiene la publicación.</p>
+        <div class="code-block">
+            <div class="code-block-header">
+                <span class="code-block-title">src/modelo_capacidad/utils/validators.py</span>
+                <span class="code-block-tag">Validación + export</span>
+            </div>
+<pre><span class="kw">def</span> <span class="fn">validar_y_exportar</span>(asignaciones_ejec, df_ejec, df_ger, clientes, planta, out_path):
+    <span class="com"># Las 5 validaciones duras del PDF</span>
+    <span class="fn">validar_unico_gerente</span>(asignaciones_ejec)      <span class="com"># 1 ejec → 1 gerente</span>
+    <span class="fn">validar_misma_zona</span>(asignaciones_ejec, df_ejec, df_ger)
+    uso = <span class="fn">validar_capacidad</span>(asignaciones_ejec, df_ejec, df_ger)
+
+    <span class="com"># Expande (ejec, gerente) → filas a nivel cliente (regla todo-o-nada)</span>
+    resultado = <span class="fn">expandir_a_clientes</span>(asignaciones_ejec, clientes, planta)
+
+    <span class="com"># Calcula la métrica oficial x/y</span>
+    metricas = <span class="fn">metrica_oficial</span>(resultado, clientes)
+
+    <span class="com"># Exporta con esquema EXACTO de la plantilla del PDF</span>
+    resultado[[<span class="str">"num_doc_cli"</span>, <span class="str">"cod_tipo_doc_cli"</span>, <span class="str">"cod_ejec_bco"</span>,
+               <span class="str">"num_doc_gte_inv"</span>, <span class="str">"cod_gte_inv"</span>]].<span class="fn">to_csv</span>(out_path,
+                                                          index=<span class="kw">False</span>,
+                                                          encoding=<span class="str">"utf-8"</span>)
+    <span class="kw">return</span> resultado, metricas   <span class="com"># 27,115 filas, x/y = 0.4076</span></pre>
+        </div>
+
+        <div class="insight">
+            <span class="insight-tag">Reproducibilidad</span>
+            <p>
+                El pipeline completo se ejecuta de extremo a extremo en una sola línea:<br>
+                <code style="display: inline-block; margin-top: 8px; padding: 6px 14px; background: var(--negro); color: var(--amarillo); border-radius: 4px; font-size: 0.95rem;">uv run python -m modelo_capacidad.run_all</code>
+                <br><br>
+                Tiempo total ~3 segundos. Genera artefactos intermedios en <code>data/processed/</code> y el archivo final <code>resultado_prueba.csv</code> en la raíz del repo. Los <strong>19 tests pytest</strong> validan que cada función respeta su contrato.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== ENTREGABLES ===================== -->
+<section id="entregables">
+    <div class="container">
+        <span class="section-tag">▸ Lo que se entrega</span>
+        <h2>Entregables del proyecto</h2>
+        <p class="section-intro">Cobertura de los cuatro entregables del PDF + extras: pipeline reproducible, tests automáticos y subagentes especializados.</p>
+
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Entregable PDF</th>
+                        <th>Archivo / ubicación</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Documento explicativo</td><td><code>docs/documento_final.md</code> + este HTML</td><td><span class="pill ok">✓</span></td></tr>
+                    <tr><td>2</td><td>Archivo de asignación</td><td><code>resultado_prueba.csv</code> (27.115 filas)</td><td><span class="pill ok">✓</span></td></tr>
+                    <tr><td>3</td><td>Códigos documentados</td><td><code>src/modelo_capacidad/</code> + <code>tests/</code></td><td><span class="pill ok">✓</span></td></tr>
+                    <tr><td>4</td><td>Bosquejo arquitectura</td><td>Sección anterior + <code>docs/arquitectura.md</code></td><td><span class="pill ok">✓</span></td></tr>
+                    <tr><td>+</td><td>Variables adicionales (opcional)</td><td><code>docs/variables_adicionales.md</code> + sección siguiente</td><td><span class="pill ok">✓</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===================== VARIABLES ADICIONALES ===================== -->
+<section id="variables" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Datos que mejorarían el modelo</span>
+        <h2>Variables adicionales propuestas</h2>
+        <p class="section-intro">
+            Recomendaciones organizadas por origen y costo. Detalle completo en <code>docs/variables_adicionales.md</code>.
+            Notación: <strong>🟢 bajo</strong>, <strong>🟡 medio</strong>, <strong>🔴 alto</strong>.
+        </p>
+
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Origen</th>
+                        <th>Variables clave</th>
+                        <th>Por qué</th>
+                        <th>Costo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Internas (data warehouse)</strong></td>
+                        <td>Volumen y monto transaccional, recencia, ticket promedio, churn score, tasa histórica de respuesta a campañas, tasa de cierre del ejecutivo, antigüedad del cliente</td>
+                        <td>Refina <code>v_e</code> y <code>τ_c</code>; permite priorizar retención sobre venta cuando aplica</td>
+                        <td>🟢</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telemetría CRM</strong></td>
+                        <td>Tiempo real medido por actividad (reemplaza la encuesta auto-reportada)</td>
+                        <td>Reduce el error de medición de <code>τ_c</code> de &gt;50% a &lt;10%</td>
+                        <td>🟢</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Externas · buró</strong></td>
+                        <td>Score DataCrédito / TransUnion, endeudamiento, reportes negativos</td>
+                        <td>Mejor identificación de A reales (clientes solventes con capacidad de inversión)</td>
+                        <td>🟡</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Externas · sociodemografía</strong></td>
+                        <td>Estrato (DANE), CIIU enriquecido (Asobancaria), composición del hogar</td>
+                        <td>Segmentación adicional para el score upstream</td>
+                        <td>🟡</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Externas · macro</strong></td>
+                        <td>Tasa USD/COP, IBR, DTF, IPC (APIs Banco de la República y DANE)</td>
+                        <td>Ajustar pesos según ciclo económico</td>
+                        <td>🟢</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scraping / proveedores</strong></td>
+                        <td>LinkedIn Sales Navigator, RUES (Cámara de Comercio), Catastro, EMIS</td>
+                        <td>Patrimonio visible y actividad empresarial; sólo si los anteriores plateauean</td>
+                        <td>🟡 / 🔴</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="insight">
+            <span class="insight-tag">Insight</span>
+            <p>
+                <strong>Antes de buscar más datos afuera, hay que aprovechar bien los que ya hay adentro.</strong> Reconciliar los 633 ejecutivos huérfanos en la tabla <code>ecas</code> sube el techo de la métrica de 40,8% a 53,4% (+12,6 puntos), <em>sin tocar el algoritmo ni traer datos nuevos</em>. Esa es la inversión con mayor ROI inmediato.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== ARQUITECTURA ===================== -->
+<section id="arquitectura">
+    <div class="container">
+        <span class="section-tag">▸ Cómo se consume el modelo</span>
+        <h2>Arquitectura del sistema</h2>
+        <p class="section-intro">
+            Bosquejo conceptual que permite servir los resultados del modelo a páginas web, app móvil, CRM y servicios externos. La idea es separar el <strong>cómputo (batch)</strong> del <strong>consumo (consultas instantáneas)</strong>: el modelo corre periódicamente, escribe sus resultados versionados en una tabla, y una API REST expone esos resultados con baja latencia.
+        </p>
+
+        <!-- Diagrama de arquitectura SVG (stack AWS) -->
+        <div class="chart" style="padding: 32px; min-height: 500px;">
+            <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                <defs>
+                    <marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <path d="M0,0 L9,3 L0,6 z" fill="#E5BD00"/>
+                    </marker>
+                </defs>
+
+                <!-- Banner AWS arriba -->
+                <rect x="20" y="10" width="860" height="22" rx="6" fill="#2C2A29"/>
+                <text x="32" y="26" font-family="Inter" font-size="11" font-weight="800" fill="#FDDA24">☁ AWS Cloud</text>
+                <text x="868" y="26" text-anchor="end" font-family="Inter" font-size="9" fill="#FFE970">VPC privada · IAM least-privilege · KMS</text>
+
+                <!-- ===== CAPA 1: BATCH PIPELINE ===== -->
+                <text x="32" y="56" font-family="Inter" font-size="10" font-weight="700" fill="#6B6863">PIPELINE BATCH (mensual)</text>
+
+                <!-- Fuentes -->
+                <g>
+                    <rect x="20" y="64" width="170" height="70" rx="8" fill="#FFE970" opacity="0.4" stroke="#E5BD00" stroke-width="1.5"/>
+                    <text x="105" y="84" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">FUENTES</text>
+                    <text x="105" y="102" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">S3 (raw lake) + Aurora</text>
+                    <text x="105" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Glue Data Catalog</text>
+                </g>
+
+                <!-- Trigger / Step Functions -->
+                <g>
+                    <rect x="220" y="64" width="170" height="70" rx="8" fill="#2C2A29"/>
+                    <text x="305" y="84" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#FDDA24">ORQUESTADOR</text>
+                    <text x="305" y="102" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">EventBridge Scheduler</text>
+                    <text x="305" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">+ Step Functions</text>
+                </g>
+
+                <!-- Lambda Job -->
+                <g>
+                    <rect x="420" y="64" width="200" height="70" rx="8" fill="#FDDA24" stroke="#E5BD00" stroke-width="2.5"/>
+                    <text x="520" y="84" text-anchor="middle" font-family="Inter" font-size="11" font-weight="800" fill="#2C2A29">⚡ AWS LAMBDA</text>
+                    <text x="520" y="102" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">job de modelado</text>
+                    <text x="520" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6B6863">container image · uv · &lt;1 s</text>
+                </g>
+
+                <!-- Lambda Validators -->
+                <g>
+                    <rect x="650" y="64" width="170" height="70" rx="8" fill="none" stroke="#2D8F4E" stroke-width="2"/>
+                    <text x="735" y="84" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2D8F4E">VALIDATORS</text>
+                    <text x="735" y="102" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Lambda separada</text>
+                    <text x="735" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">5 reglas duras</text>
+                </g>
+
+                <!-- Flechas capa superior -->
+                <g stroke="#E5BD00" stroke-width="2" fill="none" marker-end="url(#arr2)">
+                    <path d="M 190 99 L 220 99"/>
+                    <path d="M 390 99 L 420 99"/>
+                    <path d="M 620 99 L 650 99"/>
+                </g>
+
+                <!-- Flecha bajada al storage -->
+                <g stroke="#E5BD00" stroke-width="2" fill="none" marker-end="url(#arr2)">
+                    <path d="M 520 134 L 520 195"/>
+                </g>
+
+                <!-- ===== CAPA 2: STORAGE ===== -->
+                <text x="32" y="174" font-family="Inter" font-size="10" font-weight="700" fill="#6B6863">PERSISTENCIA</text>
+
+                <!-- Redshift Serverless (centrado) -->
+                <g>
+                    <rect x="270" y="200" width="380" height="70" rx="8" fill="#2C2A29"/>
+                    <text x="460" y="220" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#FDDA24">Amazon Redshift Serverless</text>
+                    <text x="460" y="238" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">tabla asignaciones · particionada por run_id</text>
+                    <text x="460" y="254" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFE970">+ S3 export para histórico inmutable</text>
+                </g>
+
+                <!-- CloudWatch / X-Ray -->
+                <g>
+                    <rect x="700" y="200" width="160" height="70" rx="8" fill="none" stroke="#6B6863" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="780" y="220" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#6B6863">OBSERVABILIDAD</text>
+                    <text x="780" y="238" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">CloudWatch + X-Ray</text>
+                    <text x="780" y="254" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">SNS para alertas</text>
+                </g>
+
+                <g stroke="#6B6863" stroke-width="1" fill="none" stroke-dasharray="2,3">
+                    <path d="M 650 235 L 700 235"/>
+                </g>
+
+                <!-- ===== CAPA 3: SERVICIO ===== -->
+                <text x="32" y="304" font-family="Inter" font-size="10" font-weight="700" fill="#6B6863">SERVICIO (consumo en línea)</text>
+
+                <!-- API Gateway -->
+                <g>
+                    <rect x="180" y="320" width="220" height="65" rx="8" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                    <text x="290" y="340" text-anchor="middle" font-family="Inter" font-size="11" font-weight="800" fill="#2C2A29">API Gateway</text>
+                    <text x="290" y="357" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">REST · throttling · WAF</text>
+                    <text x="290" y="372" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Cognito authorizer</text>
+                </g>
+
+                <!-- Lambda API -->
+                <g>
+                    <rect x="440" y="320" width="220" height="65" rx="8" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                    <text x="550" y="340" text-anchor="middle" font-family="Inter" font-size="11" font-weight="800" fill="#2C2A29">⚡ Lambda (FastAPI)</text>
+                    <text x="550" y="357" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Mangum adapter · Pydantic</text>
+                    <text x="550" y="372" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6B6863">/asignacion/cliente/{id}</text>
+                </g>
+
+
+                <!-- Flecha redshift -> api gw -->
+                <g stroke="#E5BD00" stroke-width="2" fill="none" marker-end="url(#arr2)">
+                    <path d="M 400 270 Q 340 295, 290 320"/>
+                </g>
+
+                <!-- Flecha gw -> lambda -->
+                <g stroke="#E5BD00" stroke-width="1.5" fill="none" marker-end="url(#arr2)">
+                    <path d="M 400 352 L 440 352"/>
+                </g>
+
+                <!-- ===== CAPA 4: CONSUMIDORES ===== -->
+                <g>
+                    <rect x="60" y="410" width="200" height="50" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="160" y="430" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">Web interna · QuickSight</text>
+                    <text x="160" y="446" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">dashboard gerentes</text>
+
+                    <rect x="350" y="410" width="200" height="50" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="450" y="430" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">App móvil</text>
+                    <text x="450" y="446" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">cartera del gerente</text>
+
+                    <rect x="640" y="410" width="200" height="50" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="740" y="430" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">CRM (Salesforce)</text>
+                    <text x="740" y="446" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">vista del cliente</text>
+                </g>
+
+                <!-- Flechas API -> consumidores -->
+                <g stroke="#E5BD00" stroke-width="1.5" fill="none" marker-end="url(#arr2)">
+                    <path d="M 380 385 Q 270 397, 175 410"/>
+                    <path d="M 480 385 L 450 410"/>
+                    <path d="M 580 385 Q 660 397, 730 410"/>
+                </g>
+            </svg>
+        </div>
+
+
+        <!-- Endpoints clave -->
+        <h3>Endpoints clave de la API</h3>
+        <div class="tabla-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Para qué</th>
+                        <th>Consumidor típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>GET /asignacion/cliente/{num_doc_cli}</code></td>
+                        <td>Saber a qué gerente y ejecutivo está asignado un cliente</td>
+                        <td>CRM, app móvil del gerente</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET /asignacion/gerente/{cod_gte_inv}</code></td>
+                        <td>Cartera completa de un gerente + carga de tiempo acumulada</td>
+                        <td>Dashboard del gerente</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET /asignacion/ejecutivo/{cod_ejec_bco}</code></td>
+                        <td>Reporte del ejecutivo: clientes, mix A/B/C, gerente al que reporta</td>
+                        <td>Reporte interno</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET /metricas/run/{run_id}</code></td>
+                        <td>KPIs de una corrida: x/y, %A, %B, utilización media</td>
+                        <td>Comité, área analítica</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET /metricas/historico</code></td>
+                        <td>Evolución mensual de los KPIs para detectar drift</td>
+                        <td>Power BI ejecutivo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="margin-top: 24px;">
+            La arquitectura incluye además una <strong>capa de agentes IA sobre MCP (Model Context Protocol)</strong>: un servidor MCP en Lambda expone los endpoints como herramientas, y cualquier asistente IA (Claude en Bedrock, copilots, agentes propios) las consume sin integraciones ad-hoc.
+        </p>
+
+        <!-- Diagrama mini de la capa de IA (AWS) -->
+        <div class="chart" style="padding: 28px; min-height: 340px;">
+            <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                <defs>
+                    <marker id="arr3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <path d="M0,0 L9,3 L0,6 z" fill="#E5BD00"/>
+                    </marker>
+                </defs>
+
+                <!-- Banner AWS -->
+                <rect x="20" y="10" width="840" height="22" rx="6" fill="#2C2A29"/>
+                <text x="32" y="26" font-family="Inter" font-size="11" font-weight="800" fill="#FDDA24">☁ AWS Cloud · Capa de agentes</text>
+
+                <!-- API Gateway/Lambda existente -->
+                <rect x="340" y="48" width="200" height="50" rx="8" fill="#FDDA24" stroke="#E5BD00" stroke-width="2"/>
+                <text x="440" y="68" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">API EXISTENTE</text>
+                <text x="440" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B6863">API GW + Lambda FastAPI</text>
+
+                <!-- Flecha hacia MCP -->
+                <g stroke="#E5BD00" stroke-width="2" fill="none" marker-end="url(#arr3)">
+                    <path d="M 440 98 L 440 130"/>
+                </g>
+
+                <!-- MCP Server -->
+                <rect x="280" y="135" width="320" height="60" rx="8" fill="#2C2A29"/>
+                <text x="440" y="156" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FDDA24">⚡ SERVIDOR MCP · Lambda</text>
+                <text x="440" y="172" text-anchor="middle" font-family="Inter" font-size="10" fill="#FFE970">expone endpoints como tools de IA</text>
+                <text x="440" y="186" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FFE970">get_asignacion · get_metricas · what_if</text>
+
+                <!-- Bedrock derecho -->
+                <rect x="620" y="140" width="200" height="50" rx="8" fill="none" stroke="#E5BD00" stroke-width="2" stroke-dasharray="4,3"/>
+                <text x="720" y="160" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#E5BD00">Amazon Bedrock</text>
+                <text x="720" y="178" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Claude · Llama · Titan</text>
+                <g stroke="#E5BD00" stroke-width="1.5" fill="none" stroke-dasharray="3,3">
+                    <path d="M 600 165 L 620 165"/>
+                </g>
+
+                <!-- Watchdog izquierdo -->
+                <rect x="60" y="140" width="200" height="50" rx="8" fill="none" stroke="#D62828" stroke-width="2" stroke-dasharray="4,3"/>
+                <text x="160" y="160" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#D62828">⚠ Watchdog agent</text>
+                <text x="160" y="178" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">EventBridge → Lambda → SNS</text>
+                <g stroke="#D62828" stroke-width="1.5" fill="none" stroke-dasharray="3,3">
+                    <path d="M 260 165 L 280 165"/>
+                </g>
+
+                <!-- Flechas hacia agentes -->
+                <g stroke="#E5BD00" stroke-width="2" fill="none" marker-end="url(#arr3)">
+                    <path d="M 350 195 Q 250 230, 170 250"/>
+                    <path d="M 440 195 L 440 250"/>
+                    <path d="M 530 195 Q 630 230, 710 250"/>
+                </g>
+
+                <!-- 3 agentes consumidores abajo -->
+                <g>
+                    <rect x="60" y="255" width="220" height="55" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="170" y="275" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">💬 Asistente del gerente</text>
+                    <text x="170" y="291" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Amazon Lex / Chime SDK</text>
+                    <text x="170" y="304" text-anchor="middle" font-family="Inter" font-size="8" fill="#6B6863">Teams · Slack · app móvil</text>
+
+                    <rect x="320" y="255" width="220" height="55" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="430" y="275" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">🧠 Explainer agent</text>
+                    <text x="430" y="291" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">Lambda + Bedrock Agents</text>
+                    <text x="430" y="304" text-anchor="middle" font-family="Inter" font-size="8" fill="#6B6863">razón de cada asignación</text>
+
+                    <rect x="600" y="255" width="220" height="55" rx="8" fill="white" stroke="#ABA59D" stroke-width="1.5"/>
+                    <text x="710" y="275" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#2C2A29">🔁 Copilot what-if</text>
+                    <text x="710" y="291" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B6863">SageMaker Notebook + MCP</text>
+                    <text x="710" y="304" text-anchor="middle" font-family="Inter" font-size="8" fill="#6B6863">simulaciones de escenarios</text>
+                </g>
+            </svg>
+        </div>
+
+        <h3 style="margin-top: 36px;">Componentes AWS y decisiones técnicas</h3>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">AWS Lambda · job de modelado</h4>
+                <p class="desc">Container image desde ECR con <code>uv</code>; corre en &lt; 1 s, sin servidores.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">EventBridge + Step Functions</h4>
+                <p class="desc">Trigger mensual y orquestación <code>extract → modelo → validators</code> con reintentos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🗄</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Amazon Redshift Serverless</h4>
+                <p class="desc">Tabla de asignaciones particionada por <code>run_id</code>; histórico replicado a S3.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌐</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">API Gateway + Lambda (FastAPI)</h4>
+                <p class="desc">REST con WAF, autenticación Cognito y FastAPI sobre <code>Mangum</code>.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Cognito + IAM + KMS</h4>
+                <p class="desc">OAuth2/SAML federado, least-privilege por servicio y cifrado en reposo.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">CloudWatch + X-Ray + SNS</h4>
+                <p class="desc">Logs, traceo distribuido y alertas si métricas hacen drift &gt; 15% MoM.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🐳</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">ECR + CodePipeline</h4>
+                <p class="desc">Versiona imágenes con SemVer; build, test y deploy automáticos al hacer push.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">QuickSight</h4>
+                <p class="desc">Dashboards ejecutivos conectados directo a Redshift, sin SQL para el usuario.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔌</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Servidor MCP · Lambda</h4>
+                <p class="desc">Expone endpoints como tools MCP para cualquier asistente IA (Claude, copilots).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💬</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Asistente del gerente</h4>
+                <p class="desc">Amazon Lex + Chime SDK en Teams/Slack/móvil que consulta el MCP.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧠</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Explainer · Bedrock Agents</h4>
+                <p class="desc">Genera la razón en lenguaje natural de cada asignación (cumplimiento).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔁</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Copilot what-if · SageMaker</h4>
+                <p class="desc">Notebook + tool MCP para simulaciones de escenarios sin escribir código.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚠</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Watchdog agent</h4>
+                <p class="desc">EventBridge → Lambda → SNS con alerta proactiva si hay drift.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡</div>
+                <h4 style="font-family: Inter; font-size: 1rem;">Gobernanza de agentes</h4>
+                <p class="desc">Roles IAM por agente, logs cifrados y política de no-fabricación.</p>
+            </div>
+        </div>
+
+        <div class="insight">
+            <span class="insight-tag">Insight</span>
+            <p>
+                El modelo en sí es lo más barato del sistema: corre en menos de 1 segundo. Lo que cuesta dinero y tiempo de implementación es la <strong>infraestructura de servicio</strong>: API, cache, autenticación, observabilidad y gobernanza. Por eso el bosquejo se concentra en separar las capas y dejar el cómputo desacoplado: cualquier mejora futura del modelo (cambiar pesos, agregar SA, escalar el problema) se publica reemplazando el job batch sin tocar la API ni los consumidores.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CONCLUSIONES ===================== -->
+<section id="conclusiones" class="alt">
+    <div class="container">
+        <span class="section-tag">▸ Más allá de lo obvio</span>
+        <h2>Conclusiones</h2>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">1</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">La métrica obtenida coincide con el techo teórico</h4>
+                <p class="desc">40.76% ≈ 40.8% predicho. Esto valida que el modelo es óptimo y que el techo no es artefacto del algoritmo.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">2</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">Convergen porque no compiten por capacidad</h4>
+                <p class="desc">Sobre-oferta (ratio 0.70). El MILP no encuentra ganancia porque no hay decisión real que tomar.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">4</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">El verdadero entregable es el diagnóstico</h4>
+                <p class="desc">El CSV se podría producir con regla determinista en 0.06 s. Lo valioso es el techo cuantificado <em>antes</em> de optimizar.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">5</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">Frontera tenue entre optimización y datos</h4>
+                <p class="desc">Aceptar que es proyecto de gobernanza, no de algoritmos, demuestra madurez analítica.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">5</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">El análogo físico vale más allá de este problema</h4>
+                <p class="desc">Aunque innecesaria para este caso concreto, pueden existir muchos problemas del banco donde los análogos físicos (spin glass, mean-field, transiciones de fase) permitan entender y explicar mejor el negocio.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">7</div>
+                <h4 style="font-family: Inter; font-size: 1.05rem;">La métrica oficial puede ser injusta</h4>
+                <p class="desc">Reportar 40.76% sin contexto omite que el techo del problema está en 40.8%. Por eso este informe empieza por el techo.</p>
+            </div>
+        </div>
+
+        <h3>Oportunidades de mejora</h3>
+        <div class="roadmap">
+            <div class="roadmap-item">
+                <div class="marker">Oport.</div>
+                <h4>Reconciliar huérfanos en <code>ecas</code></h4>
+                <p>Recupera los 633 ejecutivos que están en <code>clientes</code> pero no en <code>ecas</code>. Sin tocar algoritmo.</p>
+                <div class="impact">↑ Métrica: 40.8% → 53.4% (+12.6 puntos)</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="marker">Oport.</div>
+                <h4>Tabla maestra de productos</h4>
+                <p>Vocabulario unificado entre <code>oportunidades</code> y <code>encuesta</code>. Hoy mitigado con mapeo manual.</p>
+                <div class="impact">↑ τ_c con error reducido del 50% al 10%</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="marker">Oport.</div>
+                <h4>Telemetría real de actividad</h4>
+                <p>Reemplazar la encuesta auto-reportada con tiempos medidos directamente del CRM.</p>
+                <div class="impact">↑ Validez del modelo en producción</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="marker">Oport.</div>
+                <h4>Variables internas adicionales</h4>
+                <p>Histórico de campañas, tasa de respuesta, ticket promedio, churn, todas desde el data warehouse.</p>
+                <div class="impact">↑ Mejor priorización dentro de A/B</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="marker">Oport.</div>
+                <h4>Variables externas (DataCrédito, DANE)</h4>
+                <p>Buró, estrato, sector económico. APIs ya existentes. Solo si los pasos previos plateauean.</p>
+                <div class="impact">↑ Refinamiento del score upstream</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+    <div class="container">
+        <div class="yellow-bar"></div>
+        <p><strong>Bancolombia</strong></p>
+        <p>Modelo de Capacidad · Asignación óptima cliente / gerente</p>
+        <p style="margin-top: 22px; font-size: 0.85rem;">
+            Pipeline reproducible: <code style="color:var(--amarillo)">uv run python -m modelo_capacidad.run_all</code>
+        </p>
+        <p style="margin-top: 8px; font-size: 0.78rem;">Generado el 8 de mayo de 2026 · jdrincone@gmail.com</p>
+    </div>
+</footer>
+
+<!-- ===================== JS ===================== -->
+<script>
+// Inicializar KaTeX
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    }
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+});
+
+// Paleta corporativa
+const BCO = {
+    amarillo: '#FDDA24', amarilloOscuro: '#E5BD00', amarilloClaro: '#FFE970',
+    negro: '#2C2A29', gris: '#ABA59D', grisClaro: '#D9D5CF', grisOscuro: '#6B6863',
+    verde: '#2D8F4E', rojo: '#D62828'
+};
+
+const baseLayout = {
+    paper_bgcolor: 'white', plot_bgcolor: 'white',
+    font: { family: 'Inter, sans-serif', color: BCO.negro, size: 12 },
+    margin: { l: 60, r: 30, t: 40, b: 60 },
+    xaxis: { gridcolor: BCO.grisClaro, linecolor: BCO.gris, ticks: 'outside', tickcolor: BCO.gris },
+    yaxis: { gridcolor: BCO.grisClaro, linecolor: BCO.gris, ticks: 'outside', tickcolor: BCO.gris },
+    legend: { font: { size: 11 } }
+};
+
+// ----- Chart 1: Distribución por categoría -----
+Plotly.newPlot('chart-categorias', [{
+    x: ['A', 'B', 'C'],
+    y: [5495, 12727, 15923],
+    type: 'bar',
+    text: ['16.1%', '37.3%', '46.6%'],
+    textposition: 'outside',
+    marker: { color: [BCO.negro, BCO.amarillo, BCO.gris] },
+    hovertemplate: '<b>%{x}</b><br>Clientes: %{y:,}<br>%{text}<extra></extra>'
+}], {
+    ...baseLayout,
+    title: { text: 'Distribución de clientes (n=34.145) · la pirámide A/B/C', font: { size: 14 } },
+    xaxis: { ...baseLayout.xaxis, title: 'Categoría comercial' },
+    yaxis: { ...baseLayout.yaxis, title: '# clientes' },
+    showlegend: false
+}, { displayModeBar: false, responsive: true });
+
+// ----- Chart 2: Los dos techos -----
+Plotly.newPlot('chart-techos', [{
+    x: ['Techo absoluto<br>(todos los A+B)', 'Techo real<br>(con huérfanos)', 'Logrado por<br>el modelo'],
+    y: [53.4, 40.8, 40.76],
+    type: 'bar',
+    marker: { color: [BCO.gris, BCO.amarilloOscuro, BCO.amarillo] },
+    text: ['53.4%', '40.8%', '40.76%'],
+    textposition: 'outside',
+    textfont: { size: 14, color: BCO.negro },
+    hovertemplate: '<b>%{x}</b><br>%{y}%<extra></extra>'
+}], {
+    ...baseLayout,
+    title: { text: 'Los huérfanos cuestan 12.6 puntos de métrica', font: { size: 14 } },
+    yaxis: { ...baseLayout.yaxis, title: '%', range: [0, 60] },
+    showlegend: false,
+    annotations: [{
+        x: 0.5, y: 47, ax: 0, ay: 0,
+        text: '↕ pérdida estructural<br><b>12.6 puntos</b>',
+        showarrow: false, font: { color: BCO.rojo, size: 12 }
+    }]
+}, { displayModeBar: false, responsive: true });
+
+// ----- Chart 3: Comparación de los 4 enfoques -----
+Plotly.newPlot('chart-enfoques', [{
+    x: ['Analítico', 'Greedy', 'MILP', 'SA / MCMC'],
+    y: [40.76, 40.76, 40.76, 40.76],
+    type: 'bar',
+    marker: { color: [BCO.gris, BCO.amarilloClaro, BCO.amarillo, BCO.negro] },
+    text: ['40.76%', '40.76%', '40.76%', '40.76%'],
+    textposition: 'outside',
+    textfont: { size: 13, color: BCO.negro },
+    name: 'x/y',
+    hovertemplate: '<b>%{x}</b><br>x/y = %{y}%<extra></extra>'
+}], {
+    ...baseLayout,
+    title: { text: 'Los 4 enfoques convergen al mismo óptimo (40.76%)', font: { size: 14 } },
+    yaxis: { ...baseLayout.yaxis, title: 'Métrica oficial x/y (%)', range: [0, 50] },
+    shapes: [
+        {
+            type: 'line', x0: -0.5, x1: 3.5, y0: 40.8, y1: 40.8,
+            line: { color: BCO.amarilloOscuro, width: 2, dash: 'dash' }
+        }
+    ],
+    annotations: [{
+        x: 3, y: 43, text: '· techo real (40.8%)', showarrow: false,
+        font: { color: BCO.amarilloOscuro, size: 11 }
+    }],
+    showlegend: false
+}, { displayModeBar: false, responsive: true });
+
+// ----- Chart 4: Tiempos de cómputo en escala log -----
+const tiemposChart = document.getElementById('chart-resultados-tope');
+if (tiemposChart) {
+    Plotly.newPlot(tiemposChart, [{
+        x: ['Analítico', 'Greedy', 'MILP', 'SA / MCMC'],
+        y: [0.06, 0.09, 0.49, 8.0],
+        type: 'bar',
+        marker: { color: [BCO.gris, BCO.amarilloClaro, BCO.amarillo, BCO.negro] },
+        text: ['0.06s', '0.09s', '0.49s', '~8s'],
+        textposition: 'outside',
+        textfont: { size: 12, color: BCO.negro },
+        hovertemplate: '<b>%{x}</b><br>Tiempo: %{y}s<extra></extra>'
+    }], {
+        ...baseLayout,
+        title: { text: 'Tiempo de cómputo (escala log) · la sofisticación cuesta tiempo, no aporta métrica', font: { size: 14 } },
+        yaxis: { ...baseLayout.yaxis, title: 'segundos (log)', type: 'log' },
+        showlegend: false
+    }, { displayModeBar: false, responsive: true });
+}
+</script>
+
+</body>
+</html>

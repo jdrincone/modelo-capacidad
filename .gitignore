@@ -1,0 +1,98 @@
+# =====================================================
+#  .gitignore · Modelo de Capacidad
+#  Política: NO subir datos sensibles del cliente.
+#  Solo código, docs y configuración del proyecto.
+# =====================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+build/
+dist/
+
+# ---- Entornos virtuales ----
+.venv/
+venv/
+env/
+.uv/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ---- IDE / editor ----
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =====================================================
+#  DATOS DEL CLIENTE — NO SUBIR (PII / confidencial)
+# =====================================================
+
+# Datos crudos: nunca al repo público
+data/raw/*
+!data/raw/.gitkeep
+
+# Datos externos: diccionarios y plantillas del cliente
+data/external/*
+!data/external/.gitkeep
+
+# Derivados intermedios y procesados (se regeneran con el pipeline)
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Resultado del modelo: puede contener IDs de clientes (PII)
+resultado_prueba.csv
+
+# =====================================================
+#  Reports y artefactos generados
+# =====================================================
+reports/figures/*.html
+reports/figures/*.png
+reports/figures/*.svg
+!reports/figures/.gitkeep
+
+# LaTeX intermedios
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
+# Logs y temporales
+*.log
+*.tmp
+*.bak
+
+# =====================================================
+#  Documentos del cliente (no del candidato)
+# =====================================================
+docs/Prueba de conocimiento analítico.pdf
+
+# =====================================================
+#  Claude Code local
+# =====================================================
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/projects/
+
+# Notebooks ejecutados temporalmente (sin outputs en repo)
+notebooks/_*.ipynb
